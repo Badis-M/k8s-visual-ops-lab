@@ -2,6 +2,12 @@
 
 A visual learning platform and runnable Kubernetes lab for understanding how a small application becomes a containerized workload running inside a local Kubernetes cluster.
 
+Live site:
+
+```text
+https://k8s.badismerakchi.com/
+```
+
 The repository contains two parts:
 
 - `src/`: the React + TypeScript + Vite learning platform.
@@ -62,6 +68,9 @@ k8s-visual-ops-lab/
 │   ├── App.tsx
 │   └── main.tsx
 ├── public/
+│   ├── CNAME
+│   ├── favicon.svg
+│   └── icons.svg
 ├── package.json
 ├── vite.config.ts
 └── README.md
@@ -127,7 +136,7 @@ python3 --version
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Badis-M/k8s-visual-ops-lab.git
 cd k8s-visual-ops-lab
 ```
 
@@ -154,6 +163,39 @@ Build the frontend for production:
 ```bash
 npm run build
 ```
+
+---
+
+## Deployment
+
+The learning platform is deployed as a static Vite site through GitHub Pages.
+
+Production URL:
+
+```text
+https://k8s.badismerakchi.com/
+```
+
+The custom domain is configured through:
+
+- `public/CNAME`, copied into the production build by Vite,
+- GitHub Pages custom domain settings,
+- an OVH DNS `CNAME` record pointing `k8s.badismerakchi.com` to `badis-m.github.io`.
+
+Because the site is served from a custom domain at the root path, the Vite base path should remain:
+
+```ts
+base: "/"
+```
+
+Useful deployment commands:
+
+```bash
+npm run build
+git push
+```
+
+The GitHub Actions workflow builds the static site and publishes the `dist/` artifact to GitHub Pages.
 
 ---
 
@@ -279,11 +321,15 @@ This tells Kubernetes to use an image already available on the node. If the imag
 
 ### Step 5 — Apply the Kubernetes manifests
 
-Apply all Kubernetes resources from the working manifests folder:
+Apply the Namespace first, then the namespaced resources:
 
 ```bash
-kubectl apply -f lab/k8s/working/
+kubectl apply -f lab/k8s/working/namespace.yaml
+kubectl apply -f lab/k8s/working/deployment.yaml
+kubectl apply -f lab/k8s/working/service.yaml
 ```
+
+This avoids timing or ordering issues where a Deployment or Service is applied before the Namespace is available.
 
 This creates:
 
@@ -546,7 +592,9 @@ kind load docker-image k8s-ops-api:local --name k8s-ops-lab
 Apply manifests:
 
 ```bash
-kubectl apply -f lab/k8s/working/
+kubectl apply -f lab/k8s/working/namespace.yaml
+kubectl apply -f lab/k8s/working/deployment.yaml
+kubectl apply -f lab/k8s/working/service.yaml
 ```
 
 Inspect resources:
@@ -572,10 +620,13 @@ kind delete cluster --name k8s-ops-lab
 ## Reference documentation
 
 - Vite guide: https://vite.dev/guide/
+- Vite static assets: https://vite.dev/guide/assets
+- GitHub Pages custom domains: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
 - Docker build context: https://docs.docker.com/build/concepts/context/
 - kind quick start: https://kind.sigs.k8s.io/docs/user/quick-start/
 - kubectl reference: https://kubernetes.io/docs/reference/kubectl/
 - kubectl apply: https://kubernetes.io/docs/reference/kubectl/generated/kubectl_apply/
+- Kubernetes namespaces: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 - Kubernetes concepts: https://kubernetes.io/docs/concepts/
 
 ---
@@ -591,7 +642,8 @@ Current scope:
 - kind local cluster,
 - Kubernetes Deployment and Service,
 - source file explanations,
-- troubleshooting basics.
+- troubleshooting basics,
+- GitHub Pages deployment with a custom domain.
 
 Out of scope for now:
 
