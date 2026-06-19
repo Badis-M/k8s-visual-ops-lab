@@ -111,11 +111,14 @@ export function HomePage() {
           Begin with the prerequisites if you want to prepare your local machine,
           or open the lab directly if your tools are already installed.
         </p>
-        <p>
-          <Link to="/prerequisites">Start with prerequisites</Link>
-          {" · "}
-          <Link to="/lab">Open the lab</Link>
-        </p>
+        <div className="home-actions">
+          <Link className="button-link button-link-primary" to="/prerequisites">
+            Start with prerequisites
+          </Link>
+          <Link className="button-link button-link-secondary" to="/lab">
+            Open the lab
+          </Link>
+        </div>
       </article>
     </section>
   );

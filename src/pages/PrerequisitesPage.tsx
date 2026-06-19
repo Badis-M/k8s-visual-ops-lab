@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 export function PrerequisitesPage() {
   return (
     <section className="page-section">
@@ -100,6 +101,19 @@ python3 --version`}</code></pre>
           <li>kind responds from the terminal.</li>
           <li>You are ready to create a local Kubernetes cluster in the lab.</li>
         </ul>
+      </article>
+
+      <article className="lab-placeholder next-action-card">
+        <h2>Ready to start the lab?</h2>
+        <p>
+          Once your local tools are installed and validated, continue with the
+          guided Kubernetes lab.
+        </p>
+        <div className="home-actions">
+          <Link className="button-link button-link-primary" to="/lab">
+            Open the lab
+          </Link>
+        </div>
       </article>
     </section>
   );
