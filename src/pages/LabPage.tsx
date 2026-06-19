@@ -13,7 +13,7 @@ const steps = [
     title: "Build the Docker image",
     goal: "Package the application into a container image.",
     why: "Kubernetes does not run a source folder directly. It runs containers created from images.",
-    command: "docker build -t k8s-ops-api:local ./app",
+    command: "docker build -t k8s-ops-api:local lab/app",
     expected: "The image k8s-ops-api:local exists in the local Docker image cache.",
     mistake: "Using one image tag during the build and another one inside the Deployment manifest.",
   },
@@ -40,7 +40,7 @@ const steps = [
     title: "Apply Kubernetes manifests",
     goal: "Create the Namespace, Deployment, and Service from YAML files.",
     why: "Kubernetes is usually driven by declarative manifests that describe the desired state.",
-    command: "kubectl apply -f k8s/working/",
+    command: "kubectl apply -f lab/k8s/working/",
     expected: "The lab resources are created in the cluster.",
     mistake: "Applying the manifests while kubectl is pointing to the wrong Kubernetes context.",
     fix: {

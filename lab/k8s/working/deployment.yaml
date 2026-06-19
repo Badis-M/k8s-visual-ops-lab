@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-ops-api-deployment
+  namespace: k8s-ops
+  labels:
+    app: k8s-ops-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: k8s-ops-api
+  template:
+    metadata:
+      labels:
+        app: k8s-ops-api
+    spec:
+      containers:
+        - name: api
+          image: k8s-ops-api:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
