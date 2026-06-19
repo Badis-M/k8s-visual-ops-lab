@@ -89,12 +89,12 @@ main {
 }
 
 h1 {
-  max-width: 760px;
+  max-width: 840px;
   margin: 0;
   color: #f8fafc;
-  font-size: clamp(2.6rem, 7vw, 5.6rem);
-  line-height: 0.95;
-  letter-spacing: -0.08em;
+  font-size: clamp(2.4rem, 6.4vw, 5.1rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
 }
 
 h2 {
@@ -204,6 +204,33 @@ h2 {
   margin-top: 0.75rem;
 }
 
+.github-action-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(147, 197, 253, 0.28);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.72);
+  box-shadow: 0 24px 80px rgba(2, 6, 23, 0.28);
+}
+
+.github-action-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.github-action-card p {
+  max-width: 620px;
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.65;
+}
+
 pre {
   overflow-x: auto;
   border-radius: 0.8rem;
@@ -256,10 +283,10 @@ pre {
 
 .lab-step h2,
 .lab-architecture h2 {
-  max-width: 780px;
-  font-size: clamp(1.75rem, 3vw, 2.6rem);
-  line-height: 1.05;
-  letter-spacing: -0.05em;
+  max-width: 820px;
+  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
 }
 
 .lab-step-section {
@@ -316,10 +343,10 @@ pre {
 }
 
 .source-file-section h2 {
-  max-width: 780px;
-  font-size: clamp(1.75rem, 3vw, 2.6rem);
-  line-height: 1.05;
-  letter-spacing: -0.05em;
+  max-width: 820px;
+  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
 }
 
 .source-file-path {
@@ -370,6 +397,11 @@ pre {
 
   .button-link {
     width: 100%;
+  }
+
+  .github-action-card {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .lab-guide {

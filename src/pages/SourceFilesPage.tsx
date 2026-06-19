@@ -102,6 +102,22 @@ export function SourceFilesPage() {
         Kubernetes manifests that can be executed locally.
       </p>
 
+      <section className="github-action-card" aria-label="GitHub repository link">
+        <div>
+          <h2>Want to run the lab locally?</h2>
+          <p>Clone or download the full repository from GitHub.</p>
+        </div>
+
+        <a
+          className="button-link button-link-primary"
+          href="https://github.com/Badis-M/k8s-visual-ops-lab"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open GitHub repository
+        </a>
+      </section>
+
       <div className="lab-guide">
         <aside className="lab-aside" aria-label="Source files table of contents">
           <p className="eyebrow">On this page</p>

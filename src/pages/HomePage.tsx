@@ -118,6 +118,14 @@ export function HomePage() {
           <Link className="button-link button-link-secondary" to="/lab">
             Open the lab
           </Link>
+          <a
+            className="button-link button-link-secondary"
+            href="https://github.com/Badis-M/k8s-visual-ops-lab"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open GitHub repository
+          </a>
         </div>
       </article>
     </section>
