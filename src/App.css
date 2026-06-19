@@ -49,7 +49,7 @@
 }
 
 main {
-  width: min(1120px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 4rem));
   margin: 0 auto;
   padding: 5rem 0;
 }
@@ -57,6 +57,7 @@ main {
 .page-section {
   display: grid;
   gap: 1.5rem;
+  text-align: left;
 }
 
 .eyebrow {
@@ -138,6 +139,11 @@ pre {
   .navbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  main {
+    width: min(100% - 2rem, 1180px);
+    padding: 3rem 0;
   }
 
   .learning-path,
