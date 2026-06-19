@@ -135,6 +135,96 @@ pre {
   color: #e5e7eb;
 }
 
+.lab-guide {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  gap: 3rem;
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+.lab-main {
+  display: grid;
+  gap: 3.5rem;
+  min-width: 0;
+}
+
+.lab-architecture,
+.lab-step {
+  scroll-margin-top: 7rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.28);
+  padding-top: 2rem;
+}
+
+.lab-architecture p,
+.lab-step p {
+  max-width: 760px;
+  color: #cbd5e1;
+  line-height: 1.75;
+}
+
+.lab-step-heading {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.step-number {
+  color: #93c5fd;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.lab-step h2,
+.lab-architecture h2 {
+  max-width: 780px;
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.lab-step-section {
+  margin-top: 1.4rem;
+}
+
+.lab-step-section h3 {
+  margin: 0 0 0.35rem;
+  color: #f8fafc;
+  font-size: 1rem;
+}
+
+.lab-step pre {
+  max-width: 760px;
+  margin: 1.5rem 0;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.lab-aside {
+  position: sticky;
+  top: 6rem;
+  border-right: 1px solid rgba(148, 163, 184, 0.24);
+  padding-right: 1.25rem;
+}
+
+.lab-toc {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.lab-toc a {
+  color: #94a3b8;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.lab-toc a:hover {
+  color: #f8fafc;
+}
+
 @media (max-width: 760px) {
   .navbar {
     align-items: flex-start;
@@ -149,5 +239,19 @@ pre {
   .learning-path,
   .content-grid {
     grid-template-columns: 1fr;
+  }
+
+  .lab-guide {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .lab-aside {
+    position: static;
+    order: -1;
+    border-right: 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+    padding-right: 0;
+    padding-bottom: 1.5rem;
   }
 }
