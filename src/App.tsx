@@ -6,6 +6,7 @@ import { HomePage } from "./pages/HomePage";
 import { LabPage } from "./pages/LabPage";
 import { PrerequisitesPage } from "./pages/PrerequisitesPage";
 import { SourceFilesPage } from "./pages/SourceFilesPage";
+import { K8sBasicsPage } from "./pages/K8sBasicsPage";
 import "./App.css";
 
 export default function App() {
@@ -18,6 +19,7 @@ useEffect(() => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="k8s-basics" element={<K8sBasicsPage />} />
         <Route path="prerequisites" element={<PrerequisitesPage />} />
         <Route path="lab" element={<LabPage />} />
         <Route path="source-files" element={<SourceFilesPage />} />

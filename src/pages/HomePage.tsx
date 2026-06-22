@@ -8,87 +8,47 @@ export function HomePage() {
       <h1>Learn Kubernetes by rebuilding a real local lab.</h1>
 
       <p className="lead">
-        A guided learning platform that explains Kubernetes fundamentals through
-        a practical local project: a FastAPI application packaged as a Docker
-        image, loaded into a kind cluster, deployed with Kubernetes manifests,
-        exposed through a Service, and tested from your machine.
+        A visual learning platform that explains how Kubernetes runs an
+        application, then guides you through a local hands-on lab with FastAPI,
+        Docker, kind, kubectl, Deployments, Pods, Services, and troubleshooting.
       </p>
 
-          <article className="lab-placeholder">
-        <h2>Minimum knowledge before starting Kubernetes</h2>
-        <p>
-          You do not need to master Kubernetes before starting this lab, but a few
-          foundations will make the learning path much clearer.
-        </p>
-        <ul>
-          <li>
-            <strong>Linux basics:</strong> files, processes, ports, logs,
-            environment variables, and why most cloud-native workloads run on
-            Linux-based systems.
-          </li>
-          <li>
-            <strong>Terminal basics:</strong> commands, flags, output, errors,
-            and stopping a running process.
-          </li>
-          <li>
-            <strong>HTTP basics:</strong> requests, responses, localhost, and
-            application ports such as localhost:8080.
-          </li>
-          <li>
-            <strong>Docker basics:</strong> the difference between an image and a
-            running container, and why a Dockerfile packages an application.
-          </li>
-          <li>
-            <strong>YAML basics:</strong> indentation-based configuration files,
-            because Kubernetes objects are usually described as YAML manifests.
-          </li>
-        </ul>
-      </article>
+      <div className="home-actions">
+        <Link className="button-link button-link-primary" to="/k8s-basics">
+          Start with K8s Basics
+        </Link>
+        <Link className="button-link button-link-secondary" to="/lab">
+          Open the lab
+        </Link>
+        <a
+          className="button-link button-link-secondary"
+          href="https://github.com/Badis-M/k8s-visual-ops-lab"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open GitHub repository
+        </a>
+      </div>
 
-      <article className="lab-placeholder">
-        <h2>What is Kubernetes?</h2>
-        <p>
-          Kubernetes is a container orchestration platform. In practice, it helps
-          you run applications inside containers, keep them available, expose
-          them on the network, and update them in a controlled way.
-        </p>
-        <p>
-          This lab keeps the scope intentionally small: one local application,
-          one local cluster, a few core Kubernetes objects, and a clear
-          troubleshooting path.
-        </p>
-      </article>
-
-      <article className="lab-placeholder">
-        <h2>What you will build</h2>
-        <p>
-          FastAPI app → Docker image → kind cluster → Namespace → Deployment →
-          Pods → ClusterIP Service → port-forward → troubleshooting
-        </p>
-      </article>
-
-      <div className="learning-path">
+      <div className="learning-path home-learning-list">
         <article>
-          <span>01</span>
-          <h2>Kubernetes basics</h2>
+          <h2>K8s Fundamentals</h2>
           <p>
-            Understand what Kubernetes does, what problem it solves, and why
-            containers need orchestration.
+            Understand what Kubernetes is, why it exists, and how the control
+            plane and worker nodes cooperate to run applications.
           </p>
         </article>
 
         <article>
-          <span>02</span>
-          <h2>Local prerequisites</h2>
+          <h2>Prerequisites</h2>
           <p>
-            Prepare Docker, kubectl, kind, and the terminal workflow required to
-            run the lab locally.
+            Prepare the local tools required for the lab: Docker, kubectl, kind,
+            Python, and a terminal workflow.
           </p>
         </article>
 
         <article>
-          <span>03</span>
-          <h2>Hands-on lab</h2>
+          <h2>Guided lab</h2>
           <p>
             Rebuild k8s-ops-lab step by step, from application packaging to
             Kubernetes deployment and Service exposure.
@@ -96,38 +56,13 @@ export function HomePage() {
         </article>
 
         <article>
-          <span>04</span>
-          <h2>Operational checks</h2>
+          <h2>Source files</h2>
           <p>
-            Use kubectl get, describe, logs, and port-forward to verify what is
-            running and debug common issues.
+            Review the FastAPI application, Dockerfile, and Kubernetes manifests
+            used by the lab.
           </p>
         </article>
       </div>
-
-      <article className="lab-placeholder">
-        <h2>Start the learning path</h2>
-        <p>
-          Begin with the prerequisites if you want to prepare your local machine,
-          or open the lab directly if your tools are already installed.
-        </p>
-        <div className="home-actions">
-          <Link className="button-link button-link-primary" to="/prerequisites">
-            Start with prerequisites
-          </Link>
-          <Link className="button-link button-link-secondary" to="/lab">
-            Open the lab
-          </Link>
-          <a
-            className="button-link button-link-secondary"
-            href="https://github.com/Badis-M/k8s-visual-ops-lab"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open GitHub repository
-          </a>
-        </div>
-      </article>
     </section>
   );
 }

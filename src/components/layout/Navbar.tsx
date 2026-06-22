@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 
 const links = [
-  { to: "/", label: "Home" },
+  { to: "/k8s-basics", label: "K8s Fundamentals" },
   { to: "/prerequisites", label: "Prerequisites" },
   { to: "/lab", label: "Lab" },
   { to: "/source-files", label: "Source files" },
@@ -11,7 +11,7 @@ export function Navbar() {
   return (
     <header className="navbar">
       <NavLink to="/" className="brand">
-        K8s Visual Ops Lab
+        Learning Kubernetes
       </NavLink>
 
       <nav aria-label="Main navigation">

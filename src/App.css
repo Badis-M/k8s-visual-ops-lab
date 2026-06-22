@@ -31,7 +31,8 @@
   text-decoration: none;
 }
 
-.navbar nav {
+.navbar nav,
+.home-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
@@ -54,9 +55,10 @@
     box-shadow 160ms ease;
 }
 
-.nav-link:hover {
-  border-color: rgba(147, 197, 253, 0.28);
-  background: rgba(30, 41, 59, 0.72);
+.nav-link:hover,
+.button-link-secondary:hover {
+  border-color: rgba(147, 197, 253, 0.65);
+  background: rgba(30, 41, 59, 0.86);
   color: #ffffff;
 }
 
@@ -110,6 +112,51 @@ h2 {
   line-height: 1.7;
 }
 
+.basics-warning-card {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(248, 113, 113, 0.55);
+  background:
+    linear-gradient(135deg, rgba(127, 29, 29, 0.72), rgba(15, 23, 42, 0.72)),
+    rgba(15, 23, 42, 0.72);
+  box-shadow:
+    0 24px 80px rgba(127, 29, 29, 0.24),
+    inset 0 0 0 1px rgba(248, 113, 113, 0.08);
+}
+
+.basics-warning-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: #f87171;
+}
+
+.basics-warning-card h2 {
+  color: #ffffff;
+}
+
+.basics-warning-card p {
+  max-width: 820px;
+  color: #fee2e2;
+}
+
+.basics-warning-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 0.75rem !important;
+  border: 1px solid rgba(254, 202, 202, 0.42);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  background: rgba(127, 29, 29, 0.45);
+  color: #fecaca !important;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.2 !important;
+  text-transform: uppercase;
+}
+
 .learning-path,
 .content-grid {
   display: grid;
@@ -132,24 +179,72 @@ h2 {
   box-shadow: 0 24px 80px rgba(2, 6, 23, 0.32);
 }
 
-.learning-path span {
-  display: inline-flex;
-  margin-bottom: 1.25rem;
+.learning-path span,
+.step-number,
+.source-file-meta {
   color: #93c5fd;
   font-weight: 800;
 }
 
+.learning-path span {
+  display: inline-flex;
+  margin-bottom: 1.25rem;
+}
+
 .learning-path p,
 .content-grid li,
-.lab-placeholder p {
+.lab-placeholder p,
+.concept-list,
+.lab-architecture p,
+.lab-step p,
+.source-file-section p,
+.source-file-section li {
   color: #cbd5e1;
   line-height: 1.65;
 }
 
+.home-learning-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 860px;
+}
+
+.home-learning-list article {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: start;
+  border: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 0;
+  padding: 1.15rem 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.home-learning-list article:last-child {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.home-learning-list span {
+  margin: 0.2rem 0 0;
+}
+
+.home-learning-list h2,
+.home-learning-list p {
+  grid-column: 2;
+}
+
+.home-learning-list h2 {
+  margin-bottom: 0.35rem;
+}
+
+.home-learning-list p {
+  margin: 0;
+}
+
 .home-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
   margin-top: 1.5rem;
 }
 
@@ -190,11 +285,6 @@ h2 {
   color: #e5e7eb;
 }
 
-.button-link-secondary:hover {
-  border-color: rgba(147, 197, 253, 0.65);
-  background: rgba(30, 41, 59, 0.86);
-}
-
 .next-action-card {
   display: grid;
   gap: 0.25rem;
@@ -227,8 +317,164 @@ h2 {
 .github-action-card p {
   max-width: 620px;
   margin: 0;
+}
+
+.architecture-diagram {
+  display: grid;
+  gap: 1rem;
+  max-width: 860px;
+  margin-top: 1.5rem;
+}
+
+.diagram-user,
+.diagram-arrow,
+.diagram-layer-heading {
+  color: #bfdbfe;
+  font-weight: 800;
+  text-align: center;
+}
+
+.diagram-user {
+  justify-self: center;
+  border: 1px solid rgba(147, 197, 253, 0.34);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  background: rgba(30, 41, 59, 0.72);
+}
+
+.diagram-arrow {
+  color: #60a5fa;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.diagram-layer {
+  border: 1px solid rgba(147, 197, 253, 0.24);
+  border-radius: 1.15rem;
+  padding: 1rem;
+  background: rgba(2, 6, 23, 0.34);
+}
+
+.control-plane {
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.08);
+}
+
+.worker-node {
+  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.08);
+}
+
+.diagram-layer-heading {
+  margin: 0 0 0.9rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.diagram-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.diagram-grid article {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 0.9rem;
+  padding: 0.9rem;
+  background: rgba(15, 23, 42, 0.64);
+}
+
+.diagram-grid strong {
+  color: #f8fafc;
+}
+
+.diagram-grid span {
   color: #cbd5e1;
-  line-height: 1.65;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.apply-timeline {
+  display: grid;
+  gap: 0;
+  max-width: 920px;
+  margin-top: 1.5rem;
+}
+
+.apply-timeline-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0 0 1.5rem;
+}
+
+.apply-timeline-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 2.4rem;
+  bottom: 0;
+  left: 1.1rem;
+  width: 1px;
+  background: rgba(148, 163, 184, 0.28);
+}
+
+.apply-timeline-number {
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid rgba(147, 197, 253, 0.34);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.92);
+  color: #bfdbfe;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.apply-timeline-step > div {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.64);
+}
+
+.apply-timeline-step h3 {
+  margin: 0 0 0.45rem;
+  color: #f8fafc;
+  font-size: 1.05rem;
+}
+
+.apply-timeline-step p {
+  margin: 0;
+}
+
+.apply-timeline-zone {
+  margin: 0 0 0.45rem !important;
+  color: #93c5fd !important;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.4 !important;
+  text-transform: uppercase;
+}
+
+.apply-timeline-control-plane > div {
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.08);
+}
+
+.apply-timeline-worker-node > div {
+  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.08);
+}
+
+.concept-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0 0;
+  padding-left: 1.25rem;
 }
 
 pre {
@@ -288,16 +534,18 @@ pre {
 }
 
 .lab-architecture,
-.lab-step {
+.lab-step,
+.source-file-section {
   scroll-margin-top: 7rem;
   border-top: 1px solid rgba(148, 163, 184, 0.28);
   padding-top: 2rem;
 }
 
 .lab-architecture p,
-.lab-step p {
+.lab-step p,
+.source-file-section p,
+.source-file-section li {
   max-width: 760px;
-  color: #cbd5e1;
   line-height: 1.75;
 }
 
@@ -308,15 +556,14 @@ pre {
 }
 
 .step-number {
-  color: #93c5fd;
   font-size: 0.78rem;
-  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .lab-step h2,
-.lab-architecture h2 {
+.lab-architecture h2,
+.source-file-section h2 {
   max-width: 820px;
   font-size: clamp(1.65rem, 2.8vw, 2.35rem);
   line-height: 1.15;
@@ -333,10 +580,15 @@ pre {
   font-size: 1rem;
 }
 
-.lab-step pre {
+.lab-step pre,
+.source-file-section pre {
   max-width: 760px;
-  margin: 1.5rem 0;
+  margin: 1rem 0 0;
   border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.lab-step pre {
+  margin: 1.5rem 0;
 }
 
 .lab-aside {
@@ -363,26 +615,6 @@ pre {
   color: #f8fafc;
 }
 
-.source-file-section {
-  scroll-margin-top: 7rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.28);
-  padding-top: 2rem;
-}
-
-.source-file-section p,
-.source-file-section li {
-  max-width: 760px;
-  color: #cbd5e1;
-  line-height: 1.75;
-}
-
-.source-file-section h2 {
-  max-width: 820px;
-  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-}
-
 .source-file-path {
   margin: 0 0 0.75rem;
   color: #93c5fd !important;
@@ -403,12 +635,6 @@ pre {
   font-weight: 700;
 }
 
-.source-file-section pre {
-  max-width: 760px;
-  margin: 1rem 0 0;
-  border: 1px solid rgba(148, 163, 184, 0.22);
-}
-
 @media (max-width: 760px) {
   .navbar {
     align-items: flex-start;
@@ -421,8 +647,24 @@ pre {
   }
 
   .learning-path,
-  .content-grid {
+  .content-grid,
+  .diagram-grid {
     grid-template-columns: 1fr;
+  }
+
+  .apply-timeline-step {
+    grid-template-columns: 2.8rem minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+
+  .home-learning-list article {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .home-learning-list h2,
+  .home-learning-list p {
+    grid-column: auto;
   }
 
   .home-actions {

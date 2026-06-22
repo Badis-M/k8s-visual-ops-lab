@@ -22,7 +22,6 @@ export function PrerequisitesPage() {
               A Linux-style terminal: Terminal on macOS, a Linux shell, or WSL 2
               on Windows.
             </li>
-            <li>Node.js and npm, to run this Vite learning platform.</li>
             <li>Docker Desktop, to build images and provide a container runtime.</li>
             <li>kubectl, to communicate with the Kubernetes cluster.</li>
             <li>kind, to create a local Kubernetes cluster with Docker nodes.</li>
@@ -48,19 +47,8 @@ export function PrerequisitesPage() {
           Clone the repository from GitHub, or download it as a ZIP archive and
           open the extracted folder in your terminal.
         </p>
-        <pre><code>{`git clone <repository-url>
-cd k8s-visual-ops-lab`}</code></pre>
-      </article>
-
-      <article className="lab-placeholder">
-        <h2>Run the learning platform</h2>
-        <p>
-          Install the frontend dependencies, then start the local Vite
-          development server.
-        </p>
-        <pre><code>{`npm install
-npm run dev`}</code></pre>
-        <p>Then open http://localhost:5173/ in your browser.</p>
+        <pre><code>{`git clone https://github.com/Badis-M/k8s-visual-ops-lab
+cd k8s-visual-ops-lab/lab`}</code></pre>
       </article>
 
       <article className="lab-placeholder">
@@ -83,8 +71,6 @@ npm run dev`}</code></pre>
           the lab starts creating Kubernetes resources.
         </p>
         <pre><code>{`git --version
-node --version
-npm --version
 docker --version
 kubectl version --client
 kind version
