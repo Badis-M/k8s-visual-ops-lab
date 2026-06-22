@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const steps = [
   {
     number: "01",
@@ -161,6 +163,28 @@ kubectl describe service k8s-ops-api-service -n k8s-ops`,
   },
 ];
 
+function CommandBlock({ command }: { command: string }) {
+  const [hasCopied, setHasCopied] = useState(false);
+  const isSingleLineCommand = !command.includes("\n");
+
+  async function copyCommand() {
+    await navigator.clipboard.writeText(command);
+    setHasCopied(true);
+    window.setTimeout(() => setHasCopied(false), 1400);
+  }
+
+  return (
+    <div className="command-block">
+      {isSingleLineCommand && (
+        <button className="copy-command-button" type="button" onClick={copyCommand}>
+          {hasCopied ? "Copied" : "Copy"}
+        </button>
+      )}
+      <pre><code>{command}</code></pre>
+    </div>
+  );
+}
+
 export function LabPage() {
   return (
     <section className="page-section">
@@ -212,7 +236,7 @@ export function LabPage() {
                 <p>{step.why}</p>
               </div>
 
-              <pre><code>{step.command}</code></pre>
+              <CommandBlock command={step.command} />
 
               <div className="lab-step-section">
                 <h3>Explanation</h3>
@@ -232,7 +256,7 @@ export function LabPage() {
               {step.fix && (
                 <div className="lab-step-section">
                   <h3>{step.fix.title}</h3>
-                  <pre><code>{step.fix.command}</code></pre>
+                  <CommandBlock command={step.fix.command} />
                   <p>{step.fix.explanation}</p>
                 </div>
               )}

@@ -239,6 +239,40 @@ pre {
   color: #e5e7eb;
 }
 
+.command-block {
+  position: relative;
+}
+
+.command-block pre {
+  padding-right: 5.5rem;
+}
+
+.copy-command-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  border: 1px solid rgba(147, 197, 253, 0.28);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #dbeafe;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.65rem;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.copy-command-button:hover {
+  border-color: rgba(147, 197, 253, 0.48);
+  background: rgba(30, 41, 59, 0.95);
+  color: #ffffff;
+}
+
 .lab-guide {
   display: grid;
   grid-template-columns: 17rem minmax(0, 1fr);
