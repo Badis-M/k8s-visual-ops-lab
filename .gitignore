@@ -29,3 +29,7 @@ lab/app/__pycache__/
 *.njsproj
 *.sln
 *.sw?
+
+# Local Codex context
+/AGENTS.md
+/docs/PROJECT_CONTEXT.md
