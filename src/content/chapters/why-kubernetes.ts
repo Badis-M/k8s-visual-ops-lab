@@ -11,7 +11,14 @@ export const whyKubernetes: Chapter = {
   },
   related: ["architecture", "reconciliation"],
   blocks: [
-    { type: "h2", id: "the-problem", text: { en: "The problem: running software reliably", fr: "Le problème : faire tourner un logiciel de façon fiable" } },
+    {
+      type: "h2",
+      id: "the-problem",
+      text: {
+        en: "The problem: running software reliably",
+        fr: "Le problème : faire tourner un logiciel de façon fiable",
+      },
+    },
     {
       type: "p",
       text: {
@@ -26,7 +33,11 @@ export const whyKubernetes: Chapter = {
         fr: "Chacune de ces exigences est un travail à accomplir : redémarrer les processus plantés, décider quelle machine exécute quoi, router le trafic uniquement vers les copies saines, déployer les nouvelles versions progressivement. Historiquement, on le faisait avec des scripts, des procédures et des ingénieurs d'astreinte. Kubernetes automatise ces tâches.",
       },
     },
-    { type: "h2", id: "vms-vs-containers", text: { en: "Virtual machines vs containers", fr: "Machines virtuelles vs conteneurs" } },
+    {
+      type: "h2",
+      id: "vms-vs-containers",
+      text: { en: "Virtual machines vs containers", fr: "Machines virtuelles vs conteneurs" },
+    },
     {
       type: "p",
       text: {
@@ -37,19 +48,48 @@ export const whyKubernetes: Chapter = {
     {
       type: "p",
       text: {
-        en: "A container is not a small VM. It is an ordinary Linux process that the kernel isolates using namespaces (what the process can see: its own filesystem, process tree, network interfaces) and cgroups (what it can use: CPU, memory). All containers on a host share the same kernel. A container image bundles the application with its libraries, so it runs identically everywhere. Start-up is near-instant and overhead is tiny.",
-        fr: "Un conteneur n'est pas une petite VM. C'est un processus Linux ordinaire que le noyau isole grâce aux namespaces (ce que le processus voit : son propre système de fichiers, ses processus, ses interfaces réseau) et aux cgroups (ce qu'il peut consommer : CPU, mémoire). Tous les conteneurs d'un hôte partagent le même noyau. Une image de conteneur embarque l'application et ses bibliothèques, elle s'exécute donc partout de la même façon. Le démarrage est quasi instantané et le surcoût minime.",
+        en: "A container is not a small VM. It is an ordinary Linux process that the kernel isolates using namespaces (what the process can see: its own filesystem, process tree, network interfaces) and cgroups (what it can use: CPU, memory). All containers on a host share the same kernel. A container image bundles the application with its libraries, which reduces environment differences. OS/kernel, CPU architecture, configuration and storage still matter; startup time depends on the image and application.",
+        fr: "Un conteneur n'est pas une petite VM. C'est un processus Linux ordinaire que le noyau isole grâce aux namespaces (ce que le processus voit : son propre système de fichiers, ses processus, ses interfaces réseau) et aux cgroups (ce qu'il peut consommer : CPU, mémoire). Tous les conteneurs d'un hôte partagent le même noyau. Une image de conteneur embarque l'application et ses bibliothèques, ce qui réduit les différences d’environnement. OS/noyau, architecture CPU, configuration et stockage restent déterminants ; le démarrage dépend de l’image et de l’application.",
       },
     },
     { type: "diagram", name: "vm-vs-container" },
     {
       type: "table",
-      head: [{ en: "", fr: "" }, { en: "Virtual machine", fr: "Machine virtuelle" }, { en: "Container", fr: "Conteneur" }],
+      head: [
+        { en: "", fr: "" },
+        { en: "Virtual machine", fr: "Machine virtuelle" },
+        { en: "Container", fr: "Conteneur" },
+      ],
       rows: [
-        [{ en: "Isolation boundary", fr: "Frontière d'isolation" }, { en: "Hypervisor, separate kernel", fr: "Hyperviseur, noyau séparé" }, { en: "Kernel namespaces + cgroups, shared kernel", fr: "Namespaces + cgroups, noyau partagé" }],
-        [{ en: "Startup", fr: "Démarrage" }, { en: "Seconds to minutes", fr: "Secondes à minutes" }, { en: "Milliseconds to seconds", fr: "Millisecondes à secondes" }],
-        [{ en: "Typical size", fr: "Taille typique" }, { en: "GBs (full OS)", fr: "Plusieurs Go (OS complet)" }, { en: "MBs (app + libs)", fr: "Quelques Mo (app + libs)" }],
-        [{ en: "Best for", fr: "Idéal pour" }, { en: "Strong multi-tenant isolation, different OSes", fr: "Isolation forte multi-locataires, OS différents" }, { en: "Packaging and running many app instances densely", fr: "Empaqueter et exécuter de nombreuses instances densément" }],
+        [
+          { en: "Isolation boundary", fr: "Frontière d'isolation" },
+          { en: "Hypervisor, separate kernel", fr: "Hyperviseur, noyau séparé" },
+          {
+            en: "Kernel namespaces + cgroups, shared kernel",
+            fr: "Namespaces + cgroups, noyau partagé",
+          },
+        ],
+        [
+          { en: "Startup", fr: "Démarrage" },
+          { en: "Seconds to minutes", fr: "Secondes à minutes" },
+          { en: "Milliseconds to seconds", fr: "Millisecondes à secondes" },
+        ],
+        [
+          { en: "Typical size", fr: "Taille typique" },
+          { en: "GBs (full OS)", fr: "Plusieurs Go (OS complet)" },
+          { en: "MBs (app + libs)", fr: "Quelques Mo (app + libs)" },
+        ],
+        [
+          { en: "Best for", fr: "Idéal pour" },
+          {
+            en: "Strong multi-tenant isolation, different OSes",
+            fr: "Isolation forte multi-locataires, OS différents",
+          },
+          {
+            en: "Packaging and running many app instances densely",
+            fr: "Empaqueter et exécuter de nombreuses instances densément",
+          },
+        ],
       ],
     },
     {
@@ -61,7 +101,11 @@ export const whyKubernetes: Chapter = {
         fr: "En pratique, les nœuds Kubernetes sont très souvent des VM (dans le cloud) qui exécutent de nombreux conteneurs. Sur votre machine, kind exécute chaque nœud Kubernetes lui-même comme un conteneur Docker.",
       },
     },
-    { type: "h2", id: "docker-to-orchestration", text: { en: "From Docker to orchestration", fr: "De Docker à l'orchestration" } },
+    {
+      type: "h2",
+      id: "docker-to-orchestration",
+      text: { en: "From Docker to orchestration", fr: "De Docker à l'orchestration" },
+    },
     {
       type: "p",
       text: {
@@ -71,20 +115,45 @@ export const whyKubernetes: Chapter = {
     },
     {
       type: "p",
-      text: { en: "An orchestrator adds exactly that missing layer:", fr: "Un orchestrateur ajoute exactement cette couche manquante :" },
+      text: {
+        en: "An orchestrator adds exactly that missing layer:",
+        fr: "Un orchestrateur ajoute exactement cette couche manquante :",
+      },
     },
     {
       type: "list",
       items: [
-        { en: "Scheduling — choosing a machine with enough free CPU and memory for each container.", fr: "Ordonnancement — choisir une machine ayant assez de CPU et mémoire libres pour chaque conteneur." },
-        { en: "Self-healing — restarting failed containers and replacing those lost with a dead machine.", fr: "Auto-réparation — redémarrer les conteneurs en échec et remplacer ceux perdus avec une machine." },
-        { en: "Service discovery and load balancing — a stable name and IP in front of changing copies.", fr: "Découverte de services et répartition de charge — un nom et une IP stables devant des copies qui changent." },
-        { en: "Rollouts and rollbacks — replacing versions gradually and undoing bad releases.", fr: "Déploiements et retours arrière — remplacer les versions progressivement et annuler une mauvaise release." },
-        { en: "Scaling — changing the number of copies, manually or automatically.", fr: "Mise à l'échelle — changer le nombre de copies, manuellement ou automatiquement." },
-        { en: "Configuration and secrets — injecting settings without rebuilding images.", fr: "Configuration et secrets — injecter des paramètres sans reconstruire les images." },
+        {
+          en: "Scheduling — choosing a machine with enough free CPU and memory for each container.",
+          fr: "Ordonnancement — choisir une machine ayant assez de CPU et mémoire libres pour chaque conteneur.",
+        },
+        {
+          en: "Self-healing — restarting failed containers and replacing those lost with a dead machine.",
+          fr: "Auto-réparation — redémarrer les conteneurs en échec et remplacer ceux perdus avec une machine.",
+        },
+        {
+          en: "Service discovery and load balancing — a stable name and IP in front of changing copies.",
+          fr: "Découverte de services et répartition de charge — un nom et une IP stables devant des copies qui changent.",
+        },
+        {
+          en: "Rollouts and rollbacks — replacing versions gradually and undoing bad releases.",
+          fr: "Déploiements et retours arrière — remplacer les versions progressivement et annuler une mauvaise release.",
+        },
+        {
+          en: "Scaling — changing the number of copies, manually or automatically.",
+          fr: "Mise à l'échelle — changer le nombre de copies, manuellement ou automatiquement.",
+        },
+        {
+          en: "Configuration and secrets — injecting settings without rebuilding images.",
+          fr: "Configuration et secrets — injecter des paramètres sans reconstruire les images.",
+        },
       ],
     },
-    { type: "h2", id: "what-kubernetes-is", text: { en: "So what is Kubernetes?", fr: "Alors, qu'est-ce que Kubernetes ?" } },
+    {
+      type: "h2",
+      id: "what-kubernetes-is",
+      text: { en: "So what is Kubernetes?", fr: "Alors, qu'est-ce que Kubernetes ?" },
+    },
     {
       type: "p",
       text: {
@@ -101,12 +170,19 @@ export const whyKubernetes: Chapter = {
         fr: "Il ne construit pas vos images, ce n'est pas un PaaS qui déploie du code source, et il ne rend pas fiable à lui seul une application mal conçue. C'est une plateforme pour construire des plateformes — puissante, mais avec une vraie complexité opérationnelle. Pour une seule petite application, un hébergement plus simple peut être le bon choix.",
       },
     },
-    { type: "h2", id: "hands-on", text: { en: "Hands-on: feel the gap Docker leaves", fr: "Pratique : ressentir ce qui manque à Docker" } },
+    {
+      type: "h2",
+      id: "hands-on",
+      text: {
+        en: "Hands-on: feel the gap Docker leaves",
+        fr: "Pratique : ressentir ce qui manque à Docker",
+      },
+    },
     {
       type: "p",
       text: {
-        en: "This exercise only needs Docker. It demonstrates, on your own machine, the behaviours an orchestrator automates. If Docker is not installed yet, follow the setup chapter first and come back.",
-        fr: "Cet exercice ne nécessite que Docker. Il montre, sur votre machine, les comportements qu'un orchestrateur automatise. Si Docker n'est pas encore installé, suivez d'abord le chapitre d'installation puis revenez.",
+        en: "This exercise only needs Docker. It demonstrates, on your own machine, the behaviours an orchestrator automates. If Docker is not installed yet, follow the setup chapter first and come back. Confirm that container names web and web-8084 through web-8086 are unused, and local ports are free. Never remove an existing personal container to run this exercise.",
+        fr: "Cet exercice ne nécessite que Docker. Il montre, sur votre machine, les comportements qu'un orchestrateur automatise. Si Docker n’est pas installé, suivez le chapitre d’installation puis revenez. Confirmez que les noms web et web-8084 à web-8086 sont libres, ainsi que les ports locaux. Ne supprimez jamais un conteneur personnel pour poursuivre.",
       },
     },
     {
@@ -114,30 +190,58 @@ export const whyKubernetes: Chapter = {
       steps: [
         {
           title: { en: "Run a container", fr: "Lancer un conteneur" },
-          code: { lang: "bash", code: "docker run -d --name web -p 8080:80 nginx:1.27\ncurl -s localhost:8080 | head -n 4" },
-          explain: {
-            en: "`-d` runs the container in the background, `--name web` gives it a stable name, and `-p 8080:80` publishes container port 80 on host port 8080.",
-            fr: "`-d` lance le conteneur en arrière-plan, `--name web` lui donne un nom stable et `-p 8080:80` publie le port 80 du conteneur sur le port 8080 de l'hôte.",
+          code: {
+            lang: "bash",
+            code: "docker run -d --name web -p 127.0.0.1:8083:80 nginx:1.27\ncurl -s localhost:8083 | head -n 4",
           },
-          expected: { text: { en: "The first lines of the nginx welcome page.", fr: "Les premières lignes de la page d'accueil nginx." }, output: "<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>" },
+          explain: {
+            en: "`-d` runs the container in the background, `--name web` gives it a stable name, and `-p 127.0.0.1:8083:80` publishes container port 80 on loopback host port 8083.",
+            fr: "`-d` lance le conteneur en arrière-plan, `--name web` lui donne un nom stable et `-p 127.0.0.1:8083:80` publie le port 80 du conteneur sur le port local 8083 de l’hôte.",
+          },
+          expected: {
+            text: {
+              en: "The first lines of the nginx welcome page.",
+              fr: "Les premières lignes de la page d'accueil nginx.",
+            },
+            output: "<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>",
+          },
         },
         {
           title: { en: "Simulate a crash", fr: "Simuler un crash" },
-          code: { lang: "bash", code: "docker kill web\ndocker ps --filter name=web\ncurl -s localhost:8080 || echo \"service is down\"" },
+          code: {
+            lang: "bash",
+            code: 'docker kill web\ndocker ps --filter name=web\ncurl -s localhost:8083 || echo "service is down"',
+          },
           explain: {
             en: "`docker kill` sends SIGKILL to the main process, just like an out-of-memory kill would. Nothing restarts it: the container is stopped and the service is down until a human acts.",
             fr: "`docker kill` envoie SIGKILL au processus principal, comme le ferait un arrêt pour manque de mémoire. Rien ne le relance : le conteneur est arrêté et le service indisponible jusqu'à une intervention humaine.",
           },
-          expected: { text: { en: "An empty `docker ps` list and the message “service is down”.", fr: "Une liste `docker ps` vide et le message « service is down »." } },
+          expected: {
+            text: {
+              en: "An empty `docker ps` list and the message “service is down”.",
+              fr: "Une liste `docker ps` vide et le message « service is down ».",
+            },
+          },
         },
         {
-          title: { en: "Add a restart policy — and see its limits", fr: "Ajouter une politique de redémarrage — et voir ses limites" },
-          code: { lang: "bash", code: "docker rm web\ndocker run -d --name web --restart=always -p 8080:80 nginx:1.27\ndocker exec web sh -c 'kill 1'\nsleep 2 && docker ps --filter name=web" },
+          title: {
+            en: "Add a restart policy — and see its limits",
+            fr: "Ajouter une politique de redémarrage — et voir ses limites",
+          },
+          code: {
+            lang: "bash",
+            code: "docker rm web\ndocker run -d --name web --restart=always -p 127.0.0.1:8083:80 nginx:1.27\nsleep 10  # let Docker consider the container successfully started\ndocker exec web sh -c 'kill 1'\nsleep 2 && docker ps --filter name=web",
+          },
           explain: {
             en: "With `--restart=always` the Docker daemon restarts the container when its process exits. That is a tiny piece of self-healing — but it only works on this one host, does not run several copies, does not balance traffic and cannot move the container if the machine dies. Kubernetes generalises this idea to a whole cluster.",
             fr: "Avec `--restart=always`, le démon Docker relance le conteneur quand son processus s'arrête. C'est un petit morceau d'auto-réparation — mais seulement sur cet hôte, sans plusieurs copies, sans répartition du trafic, et sans pouvoir déplacer le conteneur si la machine tombe. Kubernetes généralise cette idée à tout un cluster.",
           },
-          expected: { text: { en: "The container is listed again with a recent “Up” status.", fr: "Le conteneur réapparaît avec un statut « Up » récent." } },
+          expected: {
+            text: {
+              en: "The container is listed again with a recent “Up” status.",
+              fr: "Le conteneur réapparaît avec un statut « Up » récent.",
+            },
+          },
           mistake: {
             en: "Thinking `docker kill web` will trigger the restart policy: Docker deliberately does not restart a container you stopped manually. Killing the process from inside (`kill 1`) simulates a real crash.",
             fr: "Croire que `docker kill web` déclenchera la politique de redémarrage : Docker ne relance volontairement pas un conteneur arrêté manuellement. Tuer le processus depuis l'intérieur (`kill 1`) simule un vrai crash.",
@@ -146,23 +250,39 @@ export const whyKubernetes: Chapter = {
         {
           title: { en: "Clean up", fr: "Nettoyer" },
           code: { lang: "bash", code: "docker rm -f web" },
-          explain: { en: "`-f` stops and removes the container in one command.", fr: "`-f` arrête et supprime le conteneur en une commande." },
+          explain: {
+            en: "`-f` stops and removes the container in one command.",
+            fr: "`-f` arrête et supprime le conteneur en une commande.",
+          },
         },
       ],
     },
     {
       type: "challenge",
-      title: { en: "List the jobs an orchestrator must do", fr: "Lister les tâches d'un orchestrateur" },
+      title: {
+        en: "List the jobs an orchestrator must do",
+        fr: "Lister les tâches d'un orchestrateur",
+      },
       task: {
-        en: "Using only Docker, run three nginx containers on ports 8081–8083. Then write down every manual step you would need to keep exactly three healthy copies reachable behind a single address if one of them crashes and if your machine reboots. Compare your list with the orchestrator responsibilities above.",
-        fr: "Avec Docker uniquement, lancez trois conteneurs nginx sur les ports 8081 à 8083. Notez ensuite chaque étape manuelle nécessaire pour garder exactement trois copies saines joignables derrière une adresse unique si l'une plante, puis si votre machine redémarre. Comparez votre liste avec les responsabilités d'un orchestrateur ci-dessus.",
+        en: "Using only Docker, run three nginx containers on ports 8084–8086. Then write down every manual step you would need to keep exactly three healthy copies reachable behind a single address if one of them crashes and if your machine reboots. Compare your list with the orchestrator responsibilities above.",
+        fr: "Avec Docker uniquement, lancez trois conteneurs nginx sur les ports 8084 à 8086. Notez ensuite chaque étape manuelle nécessaire pour garder exactement trois copies saines joignables derrière une adresse unique si l'une plante, puis si votre machine redémarre. Comparez votre liste avec les responsabilités d'un orchestrateur ci-dessus.",
       },
       hints: [
-        { en: "A shell loop over `8081 8082 8083` saves typing.", fr: "Une boucle shell sur `8081 8082 8083` évite de tout taper." },
-        { en: "Ask yourself: who notices a failure? who decides where the replacement runs? how do clients find the new copy?", fr: "Posez-vous la question : qui détecte la panne ? qui décide où tourne le remplaçant ? comment les clients trouvent-ils la nouvelle copie ?" },
+        {
+          en: "A shell loop over `8084 8085 8086` saves typing.",
+          fr: "Une boucle shell sur `8084 8085 8086` évite de tout taper.",
+        },
+        {
+          en: "Ask yourself: who notices a failure? who decides where the replacement runs? how do clients find the new copy?",
+          fr: "Posez-vous la question : qui détecte la panne ? qui décide où tourne le remplaçant ? comment les clients trouvent-ils la nouvelle copie ?",
+        },
       ],
       solution: [
-        { type: "code", lang: "bash", code: "for p in 8081 8082 8083; do\n  docker run -d --name web-$p -p $p:80 nginx:1.27\ndone\ndocker ps --filter name=web-\n\n# cleanup\ndocker rm -f web-8081 web-8082 web-8083" },
+        {
+          type: "code",
+          lang: "bash",
+          code: "for p in 8084 8085 8086; do\n  docker run -d --name web-$p -p 127.0.0.1:$p:80 nginx:1.27\ndone\ndocker ps --filter name=web-\n\n# cleanup\ndocker rm -f web-8084 web-8085 web-8086",
+        },
         {
           type: "p",
           text: {

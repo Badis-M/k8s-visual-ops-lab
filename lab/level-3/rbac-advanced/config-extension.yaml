@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: lab-ops-config-observer
+  labels:
+    lab.k8sops.dev/aggregate: observer
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["release-settings"]
+    verbs: ["get", "list", "watch"]

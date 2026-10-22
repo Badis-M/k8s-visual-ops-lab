@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: runtime-demo
+  labels:
+    app: runtime-demo
+spec:
+  automountServiceAccountToken: false
+  initContainers:
+    - name: prepare
+      image: busybox:1.37.0
+      command: ["sh", "-c", "echo Preparation complete"]
+  containers:
+    - name: web
+      image: nginx:1.28.0-alpine
+      ports:
+        - containerPort: 80
+          name: http
+      readinessProbe:
+        httpGet:
+          path: /
+          port: http
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
+    - name: companion
+      image: busybox:1.37.0
+      command: ["sh", "-c", "echo Companion started; sleep 3600"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 8Mi
+        limits:
+          cpu: 100m
+          memory: 32Mi

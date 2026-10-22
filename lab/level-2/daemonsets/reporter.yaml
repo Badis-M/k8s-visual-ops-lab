@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-reporter
+spec:
+  selector:
+    matchLabels:
+      app: node-reporter
+  minReadySeconds: 3
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
+  template:
+    metadata:
+      labels:
+        app: node-reporter
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 10
+      nodeSelector:
+        kubernetes.io/os: linux
+        lab.k8svisual.dev/agent: enabled
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: reporter
+          image: busybox:1.37.0
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          command:
+            - sh
+            - -ec
+            - |
+              trap 'exit 0' TERM INT
+              while true; do
+                printf 'Node=%s tick=%s\n' "$NODE_NAME" "$(date -u +%FT%TZ)"
+                sleep 5 &
+                wait "$!"
+              done
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits: { cpu: 100m, memory: 32Mi }

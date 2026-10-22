@@ -29,7 +29,10 @@ function BlockView({ block: b }: { block: Block }) {
       );
     case "h2":
       return (
-        <h2 id={b.id} className="mt-14 mb-4 scroll-mt-24 text-2xl font-semibold tracking-tight text-foreground first:mt-0">
+        <h2
+          id={b.id}
+          className="mt-14 mb-4 scroll-mt-24 text-2xl font-semibold tracking-tight text-foreground first:mt-0"
+        >
           {tr(b.text)}
         </h2>
       );
@@ -55,7 +58,13 @@ function BlockView({ block: b }: { block: Block }) {
     case "code":
       return (
         <>
-          <CodeBlock code={b.code} lang={b.lang} title={b.title} output={b.output ?? false} />
+          <CodeBlock
+            code={b.code}
+            lang={b.lang}
+            title={b.title}
+            kind={b.kind}
+            output={b.output ?? false}
+          />
           {b.caption && <p className="-mt-2 text-sm text-muted-foreground">{tr(b.caption)}</p>}
         </>
       );
@@ -69,7 +78,10 @@ function BlockView({ block: b }: { block: Block }) {
       return (
         <div className="my-6 overflow-hidden rounded-xl border border-border">
           {b.rows.map((r, i) => (
-            <div key={i} className="grid gap-1 border-b border-border px-4 py-3.5 last:border-b-0 sm:grid-cols-[13rem_1fr] sm:gap-5">
+            <div
+              key={i}
+              className="grid gap-1 border-b border-border px-4 py-3.5 last:border-b-0 sm:grid-cols-[13rem_1fr] sm:gap-5"
+            >
               <code className="h-fit w-fit">{r.field}</code>
               <p className="text-sm leading-relaxed text-foreground/80">
                 <RichText text={tr(r.text)} />
@@ -85,7 +97,9 @@ function BlockView({ block: b }: { block: Block }) {
             <thead className="bg-surface-2/60 text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
                 {b.head.map((h, i) => (
-                  <th key={i} className="px-4 py-3 font-medium">{tr(h)}</th>
+                  <th key={i} className="px-4 py-3 font-medium">
+                    {tr(h)}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -93,7 +107,10 @@ function BlockView({ block: b }: { block: Block }) {
               {b.rows.map((row, i) => (
                 <tr key={i} className="border-t border-border">
                   {row.map((c, j) => (
-                    <td key={j} className={`px-4 py-3 align-top ${j === 0 ? "font-medium text-foreground" : "text-foreground/80"}`}>
+                    <td
+                      key={j}
+                      className={`px-4 py-3 align-top ${j === 0 ? "font-medium text-foreground" : "text-foreground/80"}`}
+                    >
                       <RichText text={tr(c)} />
                     </td>
                   ))}
@@ -110,7 +127,15 @@ function BlockView({ block: b }: { block: Block }) {
   }
 }
 
-export function Callout({ tone, title, text }: { tone: "info" | "warn" | "tip"; title: string; text: string }) {
+export function Callout({
+  tone,
+  title,
+  text,
+}: {
+  tone: "info" | "warn" | "tip";
+  title: string;
+  text: string;
+}) {
   const map = {
     info: { Icon: Info, cls: "border-worker/30 bg-worker-soft text-worker" },
     tip: { Icon: Lightbulb, cls: "border-success/30 bg-success/10 text-success" },
@@ -145,7 +170,14 @@ function Steps({ steps }: { steps: LabStep[] }) {
               <RichText text={tr(s.why)} />
             </p>
           )}
-          {s.code && <CodeBlock code={s.code.code} lang={s.code.lang} />}
+          {s.code && (
+            <CodeBlock
+              code={s.code.code}
+              lang={s.code.lang}
+              title={s.code.title}
+              kind={s.code.kind}
+            />
+          )}
           <p className="!text-[15px]">
             <RichText text={tr(s.explain)} />
           </p>
@@ -190,7 +222,10 @@ function Challenge({ block }: { block: Extract<Block, { type: "challenge" }> }) 
       </div>
       <div className="space-y-2 px-5 py-4 sm:px-6">
         {block.hints.slice(0, hints).map((h, i) => (
-          <div key={i} className="flex gap-2 rounded-lg border border-border bg-background/40 px-3 py-2 text-sm text-foreground/85">
+          <div
+            key={i}
+            className="flex gap-2 rounded-lg border border-border bg-background/40 px-3 py-2 text-sm text-foreground/85"
+          >
             <Lightbulb className="mt-0.5 size-3.5 shrink-0 text-warning" />
             <span>
               <RichText text={tr(h)} />
@@ -199,7 +234,8 @@ function Challenge({ block }: { block: Extract<Block, { type: "challenge" }> }) 
         ))}
         <div className="flex flex-wrap gap-2 pt-1">
           {hints < block.hints.length && (
-            <Button variant="outline"
+            <Button
+              variant="outline"
               type="button"
               onClick={() => setHints((h) => h + 1)}
               className="rounded-lg border border-border bg-background/40 px-3 py-1.5 text-sm text-foreground/90 transition-colors hover:border-warning/40"
@@ -207,7 +243,8 @@ function Challenge({ block }: { block: Extract<Block, { type: "challenge" }> }) 
               {tr(ui.hint)} {hints + 1}/{block.hints.length}
             </Button>
           )}
-          <Button variant="outline"
+          <Button
+            variant="outline"
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: writer
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: persistent-writer
+  template:
+    metadata:
+      labels:
+        app: persistent-writer
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: writer
+          image: busybox:1.37.0
+          command:
+            - sh
+            - -ec
+            - |
+              if [ ! -f /data/message.txt ]; then
+                printf 'Persistent exercise data\n' > /data/message.txt
+              fi
+              exec sleep 86400
+          readinessProbe:
+            exec:
+              command: [test, -f, /data/message.txt]
+            periodSeconds: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits: { cpu: 100m, memory: 32Mi }
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data

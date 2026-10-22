@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-trusted-web
+spec:
+  podSelector:
+    matchLabels:
+      app: policy-web
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              role: trusted-client
+      ports:
+        - protocol: TCP
+          port: 80

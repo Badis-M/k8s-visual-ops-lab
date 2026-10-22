@@ -1,0 +1,12 @@
+apiVersion: v2
+name: release-demo
+description: A local parent chart with one pinned dependency
+type: application
+version: 0.1.0
+kubeVersion: ">=1.35.0-0 <1.36.0-0"
+dependencies:
+  - name: academy-web
+    version: "0.1.0"
+    repository: "file://../../helm-charts/academy-web"
+    alias: web
+    condition: web.enabled

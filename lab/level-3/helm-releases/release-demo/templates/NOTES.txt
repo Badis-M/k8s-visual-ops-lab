@@ -1,0 +1,2 @@
+The web dependency owns the Deployment, Service and ConfigMap.
+Inspect this release with helm get values and helm get manifest.

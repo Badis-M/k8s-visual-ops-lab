@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-trusted-egress
+spec:
+  podSelector:
+    matchLabels:
+      role: trusted-client
+  policyTypes:
+    - Egress
+  egress: []

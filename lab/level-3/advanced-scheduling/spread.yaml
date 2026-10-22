@@ -1,0 +1,52 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: lab-spread-priority
+value: 1000
+globalDefault: false
+preemptionPolicy: Never
+description: "Non-preempting priority for the disposable scheduling lesson."
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spread-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spread-web
+  template:
+    metadata:
+      labels:
+        app: spread-web
+    spec:
+      automountServiceAccountToken: false
+      priorityClassName: lab-spread-priority
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+      topologySpreadConstraints:
+        - maxSkew: 1
+          minDomains: 2
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: spread-web
+      containers:
+        - name: web
+          image: nginx:1.28.0-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi

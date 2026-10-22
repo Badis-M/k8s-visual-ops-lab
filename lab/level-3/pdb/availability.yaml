@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: protected
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: protected
+  template:
+    metadata:
+      labels:
+        app: protected
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.28.0
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: protected
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: protected

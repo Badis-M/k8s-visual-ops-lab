@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+namespace: lab-kustomize-prod
+namePrefix: prod-
+labels:
+  - pairs:
+      environment: prod
+    includeSelectors: false
+    includeTemplates: true
+replicas:
+  - name: web
+    count: 2
+configMapGenerator:
+  - name: web-content
+    behavior: merge
+    files:
+      - index.html

@@ -1,0 +1,8 @@
+apiVersion: learning.k8svisual.dev/v1alpha1
+kind: Greeting
+metadata:
+  name: hello
+spec:
+  message: Change held while paused
+  replicas: 2
+  paused: true

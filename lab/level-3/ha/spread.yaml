@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spread-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spread-web
+  template:
+    metadata:
+      labels:
+        app: spread-web
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          nodeTaintsPolicy: Honor
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: spread-web
+      containers:
+        - name: web
+          image: nginx:1.28.0
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spread-web
+spec:
+  selector:
+    app: spread-web
+  ports:
+    - port: 80
+      targetPort: 80

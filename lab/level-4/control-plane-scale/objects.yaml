@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: item-a
+  labels:
+    app: api-sampling
+data:
+  value: alpha
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: item-b
+  labels:
+    app: api-sampling
+data:
+  value: beta
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: item-c
+  labels:
+    app: api-sampling
+data:
+  value: gamma

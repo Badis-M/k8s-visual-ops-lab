@@ -1,0 +1,8 @@
+apiVersion: workshops.k8sops.dev/v1
+kind: Gadget
+metadata:
+  name: demo
+  annotations:
+    workshop: conversion
+spec:
+  size: 3

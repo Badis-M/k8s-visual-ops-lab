@@ -1,0 +1,4 @@
+web:
+  enabled: true
+  replicaCount: 1
+  message: "Release one"

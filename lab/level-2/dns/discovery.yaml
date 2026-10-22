@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dns-web
+  template:
+    metadata:
+      labels:
+        app: dns-web
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: web
+          image: nginx:1.28.0-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: dns-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-headless
+spec:
+  clusterIP: None
+  selector:
+    app: dns-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - name: tools
+      image: busybox:1.37.0
+      command: ["sleep", "3600"]

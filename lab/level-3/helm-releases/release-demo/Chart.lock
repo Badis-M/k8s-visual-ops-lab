@@ -1,0 +1,6 @@
+dependencies:
+  - name: academy-web
+    repository: file://../../helm-charts/academy-web
+    version: 0.1.0
+digest: sha256:376175fd2677201ffe1bf7dccbc28b11780d2dd1e958f80fad589d8511ef24de
+generated: "2026-10-22T18:59:38.428722+02:00"

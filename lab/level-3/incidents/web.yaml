@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+        release: stable
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: web
+          image: nginx:1.28.0-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout
+spec:
+  selector:
+    app: checkout
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - name: tools
+      image: busybox:1.37.0
+      command: ["sleep", "3600"]

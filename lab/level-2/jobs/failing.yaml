@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: invalid-report
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 600
+  template:
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      containers:
+        - name: report
+          image: busybox:1.37.0
+          command: ["sh", "-c"]
+          args: ["echo 'Invalid input: missing report date' >&2; exit 42"]

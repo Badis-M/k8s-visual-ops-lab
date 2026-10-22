@@ -1,0 +1,22 @@
+---
+# Source: academy-web/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: review-academy-web
+  labels:
+    app.kubernetes.io/name: academy-web
+    app.kubernetes.io/instance: review
+    helm.sh/chart: "academy-web-0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: academy-web
+    app.kubernetes.io/instance: review
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+
+

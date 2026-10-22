@@ -1,0 +1,6 @@
+value("/workshop/release") = "green"
+
+put /workshop/release approved
+
+get /workshop/release
+

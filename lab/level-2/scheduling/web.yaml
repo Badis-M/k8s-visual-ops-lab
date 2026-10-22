@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: scheduling-web
+  template:
+    metadata:
+      labels:
+        app: scheduling-web
+    spec:
+      automountServiceAccountToken: false
+      nodeSelector:
+        lab.k8sops.dev/pool: reserved
+      containers:
+        - name: web
+          image: nginx:1.28.0-alpine
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 96Mi

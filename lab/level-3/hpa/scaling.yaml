@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-demo
+  template:
+    metadata:
+      labels:
+        app: cpu-demo
+    spec:
+      containers:
+        - name: worker
+          image: busybox:1.37.0
+          command: ["sh", "-c", "while :; do :; done"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 8Mi
+            limits:
+              cpu: 100m
+              memory: 32Mi
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cpu-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cpu-demo
+  minReplicas: 1
+  maxReplicas: 3
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

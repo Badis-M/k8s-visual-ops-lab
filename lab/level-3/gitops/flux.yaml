@@ -1,0 +1,29 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: academy-source
+  namespace: lab-gitops-flux
+spec:
+  interval: 1m
+  url: REPLACE_REPO_URL
+  ref:
+    commit: "REPLACE_COMMIT_SHA"
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: academy-lab
+  namespace: lab-gitops-flux
+spec:
+  interval: 1m
+  retryInterval: 30s
+  timeout: 2m
+  path: ./lab/level-3/gitops/app
+  sourceRef:
+    kind: GitRepository
+    name: academy-source
+  targetNamespace: lab-gitops-flux
+  serviceAccountName: gitops-applier
+  prune: true
+  deletionPolicy: Orphan
+  wait: true

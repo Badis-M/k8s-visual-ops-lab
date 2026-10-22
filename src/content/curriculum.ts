@@ -1,3 +1,52 @@
+import { kubebuilderOperator } from "./chapters/kubebuilder-operator";
+import { operators } from "./chapters/operators";
+import { customControllers } from "./chapters/custom-controllers";
+import { failureScenarios } from "./chapters/failure-scenarios";
+import { multiCluster } from "./chapters/multi-cluster";
+import { controlPlaneScale } from "./chapters/control-plane-scale";
+import { csi } from "./chapters/csi";
+import { etcd } from "./chapters/etcd";
+import { apiExtension } from "./chapters/api-extension";
+import { admissionWebhooks } from "./chapters/admission-webhooks";
+import { crds } from "./chapters/crds";
+import { controllersInternals } from "./chapters/controllers-internals";
+import { apiArchitecture } from "./chapters/api-architecture";
+import { cniAdvanced } from "./chapters/cni-advanced";
+import { cri } from "./chapters/cri";
+import { schedulerInternals } from "./chapters/scheduler-internals";
+import { platformEngineering } from "./chapters/platform-engineering";
+import { gitops } from "./chapters/gitops";
+import { kustomize } from "./chapters/kustomize";
+import { helmReleases } from "./chapters/helm-releases";
+import { helmCharts } from "./chapters/helm-charts";
+import { incidents } from "./chapters/incidents";
+import { observability } from "./chapters/observability";
+import { cniInternals } from "./chapters/cni-internals";
+import { advancedScheduling } from "./chapters/advanced-scheduling";
+import { backupDr } from "./chapters/backup-dr";
+import { rbacAdvanced } from "./chapters/rbac-advanced";
+import { podSecurity } from "./chapters/pod-security";
+import { securityHardening } from "./chapters/security-hardening";
+import { ha } from "./chapters/ha";
+import { pdb } from "./chapters/pdb";
+import { verticalClusterScaling } from "./chapters/vertical-cluster-scaling";
+import { hpa } from "./chapters/hpa";
+import { daemonsets } from "./chapters/daemonsets";
+import { statefulsets } from "./chapters/statefulsets";
+import { storage } from "./chapters/storage";
+import { initSidecars } from "./chapters/init-sidecars";
+import { networkPolicies } from "./chapters/network-policies";
+import { ingressGateway } from "./chapters/ingress-gateway";
+import { dns } from "./chapters/dns";
+import { jobs } from "./chapters/jobs";
+import { troubleshooting2 } from "./chapters/troubleshooting-2";
+import { helmBasics } from "./chapters/helm-basics";
+import { scheduling } from "./chapters/scheduling";
+import { rbac } from "./chapters/rbac";
+import { probes } from "./chapters/probes";
+import { resources } from "./chapters/resources";
+import { rollbacks } from "./chapters/rollbacks";
+import { rolloutStrategies } from "./chapters/rollout-strategies";
 import type { Chapter, L, Level } from "./types";
 import { whyKubernetes } from "./chapters/why-kubernetes";
 import { architecture } from "./chapters/architecture";
@@ -50,14 +99,6 @@ export const levels: { level: Level; name: L; tagline: L; description: L }[] = [
   },
 ];
 
-const up = (id: string, level: Level, en: string, fr: string, minutes = 45): Chapter => ({
-  id,
-  level,
-  title: { en, fr },
-  summary: { en: "", fr: "" },
-  minutes,
-});
-
 export const chapters: Chapter[] = [
   // Level 1
   whyKubernetes,
@@ -72,57 +113,57 @@ export const chapters: Chapter[] = [
   configmapsSecrets,
   kubectlTroubleshooting,
   // Level 2
-  up("rollout-strategies", 2, "Deployment strategies: RollingUpdate & Recreate", "Stratégies : RollingUpdate & Recreate"),
-  up("rollbacks", 2, "Rollbacks and revision history", "Rollbacks et historique des révisions", 30),
-  up("resources", 2, "Resource requests and limits", "Requests et limits de ressources"),
-  up("probes", 2, "Liveness, readiness and startup probes", "Probes liveness, readiness et startup"),
-  up("init-sidecars", 2, "Init containers and sidecars", "Init containers et sidecars"),
-  up("storage", 2, "PersistentVolumes, PVCs and StorageClasses", "PersistentVolumes, PVC et StorageClasses", 60),
-  up("statefulsets", 2, "StatefulSets", "StatefulSets"),
-  up("daemonsets", 2, "DaemonSets", "DaemonSets", 30),
-  up("jobs", 2, "Jobs and CronJobs", "Jobs et CronJobs", 35),
-  up("dns", 2, "Cluster DNS and service discovery", "DNS du cluster et découverte de services"),
-  up("ingress-gateway", 2, "Ingress controllers and Gateway API", "Ingress controllers et Gateway API", 60),
-  up("network-policies", 2, "NetworkPolicies", "NetworkPolicies"),
-  up("rbac", 2, "RBAC, ServiceAccounts and authorization", "RBAC, ServiceAccounts et autorisation", 55),
-  up("scheduling", 2, "Taints, tolerations, affinity, nodeSelector", "Taints, tolerations, affinité, nodeSelector"),
-  up("helm-basics", 2, "Helm fundamentals", "Les bases de Helm", 55),
-  up("troubleshooting-2", 2, "Troubleshooting Pods, Services, network & storage", "Dépanner Pods, Services, réseau et stockage", 60),
+  rolloutStrategies,
+  rollbacks,
+  resources,
+  probes,
+  initSidecars,
+  storage,
+  statefulsets,
+  daemonsets,
+  jobs,
+  dns,
+  ingressGateway,
+  networkPolicies,
+  rbac,
+  scheduling,
+  helmBasics,
+  troubleshooting2,
   // Level 3
-  up("helm-charts", 3, "Helm chart development and reusable templates", "Développer des charts Helm et des templates réutilisables", 70),
-  up("helm-releases", 3, "Helm dependencies, upgrades and releases", "Dépendances Helm, upgrades et releases"),
-  up("kustomize", 3, "Kustomize and environment overlays", "Kustomize et overlays d'environnement"),
-  up("gitops", 3, "GitOps with Argo CD and Flux", "GitOps avec Argo CD et Flux", 70),
-  up("hpa", 3, "Horizontal Pod Autoscaling", "Horizontal Pod Autoscaling"),
-  up("vertical-cluster-scaling", 3, "Vertical and cluster autoscaling", "Autoscaling vertical et du cluster", 35),
-  up("pdb", 3, "PodDisruptionBudgets", "PodDisruptionBudgets", 30),
-  up("ha", 3, "High availability architecture", "Architecture haute disponibilité", 55),
-  up("advanced-scheduling", 3, "Advanced scheduling strategies", "Stratégies d'ordonnancement avancées"),
-  up("security-hardening", 3, "Kubernetes security hardening", "Durcissement de la sécurité", 60),
-  up("pod-security", 3, "Pod Security Admission", "Pod Security Admission", 35),
-  up("rbac-advanced", 3, "Advanced RBAC design", "Conception RBAC avancée"),
-  up("cni-internals", 3, "Networking and CNI internals", "Réseau et internes CNI", 60),
-  up("observability", 3, "Prometheus, Grafana and OpenTelemetry", "Prometheus, Grafana et OpenTelemetry", 70),
-  up("incidents", 3, "Troubleshooting production incidents", "Dépanner des incidents de production", 60),
-  up("backup-dr", 3, "Backups and disaster recovery", "Sauvegardes et reprise après sinistre", 50),
+  helmCharts,
+  helmReleases,
+  kustomize,
+  gitops,
+  hpa,
+  verticalClusterScaling,
+  pdb,
+  ha,
+  advancedScheduling,
+  securityHardening,
+  podSecurity,
+  rbacAdvanced,
+  cniInternals,
+  observability,
+  incidents,
+  backupDr,
   // Level 4
-  up("api-architecture", 4, "Kubernetes API architecture in depth", "L'architecture de l'API en profondeur", 60),
-  up("controllers-internals", 4, "How controllers work internally", "Le fonctionnement interne des contrôleurs", 60),
-  up("crds", 4, "CustomResourceDefinitions", "CustomResourceDefinitions", 60),
-  up("custom-controllers", 4, "Writing custom controllers", "Écrire des contrôleurs personnalisés", 75),
-  up("operators", 4, "The Operator pattern", "Le pattern Operator", 50),
-  up("kubebuilder-operator", 4, "Build an Operator with Kubebuilder", "Construire un Operator avec Kubebuilder", 120),
-  up("admission-webhooks", 4, "Admission webhooks and policy", "Webhooks d'admission et politiques", 60),
-  up("api-extension", 4, "API extension and conversion", "Extension d'API et conversion", 50),
-  up("scheduler-internals", 4, "Scheduler architecture and custom scheduling", "Architecture du scheduler et ordonnancement personnalisé", 60),
-  up("etcd", 4, "etcd architecture, consistency and recovery", "etcd : architecture, cohérence et reprise", 60),
-  up("cri", 4, "Container runtime internals and CRI", "Internes du runtime et CRI", 50),
-  up("cni-advanced", 4, "CNI architecture and advanced networking", "Architecture CNI et réseau avancé", 60),
-  up("csi", 4, "CSI and storage architecture", "CSI et architecture du stockage", 50),
-  up("control-plane-scale", 4, "Control plane performance and scalability", "Performance et scalabilité du control plane", 50),
-  up("multi-cluster", 4, "Multi-cluster and fleet management", "Multi-cluster et gestion de flotte", 50),
-  up("failure-scenarios", 4, "Advanced failure scenarios", "Scénarios de panne avancés", 60),
-  up("platform-engineering", 4, "Platform engineering patterns", "Patterns de platform engineering", 50),
+  apiArchitecture,
+  controllersInternals,
+  crds,
+  customControllers,
+  operators,
+  kubebuilderOperator,
+  admissionWebhooks,
+  apiExtension,
+  schedulerInternals,
+  etcd,
+  cri,
+  cniAdvanced,
+  csi,
+  controlPlaneScale,
+  multiCluster,
+  failureScenarios,
+  platformEngineering,
 ];
 
 export const isAvailable = (c: Chapter) => !!c.blocks?.length;

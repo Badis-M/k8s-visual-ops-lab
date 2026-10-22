@@ -1,11 +1,20 @@
 # Roadmap
 
 - [x] Replace the original site with the academy application
-- [x] Redesign: design system, home, academy, chapter reader, FR/EN, local progress
-- [x] Interactive architecture + kubectl apply flow diagram
-- [x] Level 1: 6 chapters fully written (why, architecture, reconciliation, kind setup, pods, deployments)
-- [x] Integrate supplied Level 1 chapters: namespaces/contexts, services, labels, configmaps/secrets, troubleshooting
-- [x] Validate supplied lesson completeness, quizzes, copy, language switching and narrow-screen behavior (not Kubernetes execution)
-- [ ] Execute and verify the five supplied Kubernetes labs on a local kind cluster
-- [ ] Translate the original guided lab (/lab) to French
-- [ ] Levels 2-4 chapter content
+- [x] Academy, chapter reader, FR/EN, local progress and existing visual diagrams
+- [x] Level 1: eleven beginner chapters (preserved during the advanced-content implementation)
+- [x] Level 2: all sixteen intermediate lessons with bilingual explanations, exercises, quizzes and corrections
+- [x] Level 3: all sixteen advanced lessons, including delivery, autoscaling, reliability, security and telemetry
+- [x] Level 4: all seventeen expert lessons, including a complete buildable/tested Go controller/Operator
+- [x] Isolated lab fixtures, pinned prerequisites and official source mapping for all 49 added chapters
+- [x] Interactive HPA request/replica diagram and curriculum integrity/interaction tests
+- [ ] Execute and record the original guided lab and representative chapter labs on a separately authorized disposable kind cluster
+- [ ] Validate conditional add-ons on a real lab: policy-enforcing CNI, Gateway, metrics/VPA, CSI snapshots, GitOps and observability
+- [ ] Validate real API admission/conversion TLS, controller watches/ownership/garbage collection and container images
+- [ ] Execute isolated backup/restore, etcd recovery and failure scenarios; record observed recovery limits
+- [x] Translate the original guided lab (/lab) and displayed source descriptions to French
+- [x] Review all 60 courses, literal code rendering/copying and practical workflow corrections (see docs/content-review.md)
+- [ ] Review inherited repository-wide formatting violations separately
+- [ ] Choose and validate SSR hosting and domain configuration
+
+Content availability is not cluster execution evidence. See [implementation status](docs/content-implementation.md) and [official sources](docs/content-sources.md).

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: missing-class
+spec:
+  storageClassName: lab-does-not-exist
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 64Mi

@@ -2,19 +2,31 @@ export type Lang = "en" | "fr";
 /** A bilingual string. Commands, YAML fields and API names stay untranslated. */
 export type L = { en: string; fr: string };
 
-export type CodeLang = "bash" | "yaml" | "text" | "go" | "python" | "dockerfile";
+export type CodeLang =
+  | "bash"
+  | "yaml"
+  | "text"
+  | "go"
+  | "python"
+  | "dockerfile"
+  | "helm"
+  | "makefile"
+  | "promql"
+  | "json";
+export type CodeKind = "command" | "file" | "snippet";
 
 export type DiagramName =
   | "architecture"
   | "reconcile"
   | "deployment-tree"
   | "vm-vs-container"
-  | "pod-lifecycle";
+  | "pod-lifecycle"
+  | "autoscaling-feedback";
 
 export type LabStep = {
   title: L;
   why?: L;
-  code?: { lang: CodeLang; code: string };
+  code?: { lang: CodeLang; code: string; title?: string; kind?: CodeKind };
   explain: L;
   expected?: { text: L; output?: string };
   mistake?: L;
@@ -32,7 +44,15 @@ export type Block =
   | { type: "h2"; id: string; text: L }
   | { type: "h3"; text: L }
   | { type: "list"; items: L[]; ordered?: boolean }
-  | { type: "code"; lang: CodeLang; code: string; title?: string; caption?: L; output?: boolean }
+  | {
+      type: "code";
+      lang: CodeLang;
+      code: string;
+      title?: string;
+      kind?: CodeKind;
+      caption?: L;
+      output?: boolean;
+    }
   | { type: "callout"; tone: "info" | "warn" | "tip"; title: L; text: L }
   | { type: "diagram"; name: DiagramName }
   | { type: "steps"; steps: LabStep[] }

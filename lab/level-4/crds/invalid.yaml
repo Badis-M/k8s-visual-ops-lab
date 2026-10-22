@@ -1,0 +1,7 @@
+apiVersion: learning.k8svisual.dev/v1alpha1
+kind: Greeting
+metadata:
+  name: invalid
+spec:
+  message: Invalid replica count
+  replicas: 0

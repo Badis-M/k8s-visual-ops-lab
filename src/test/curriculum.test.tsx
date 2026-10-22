@@ -7,7 +7,13 @@ describe("curriculum", () => {
   });
 
   it("marks chapters without content as upcoming", () => {
-    const upcoming = chapters.find((c) => c.id === "rollout-strategies");
+    const upcoming = {
+      id: "future-lesson",
+      level: 2 as const,
+      title: { en: "Future", fr: "À venir" },
+      summary: { en: "", fr: "" },
+      minutes: 30,
+    };
     const available = chapters.find((c) => c.id === "architecture");
     expect(upcoming && isAvailable(upcoming)).toBe(false);
     expect(available && isAvailable(available)).toBe(true);

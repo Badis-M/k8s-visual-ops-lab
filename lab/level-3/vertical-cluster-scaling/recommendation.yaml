@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rightsize
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rightsize
+  template:
+    metadata:
+      labels:
+        app: rightsize
+    spec:
+      containers:
+        - name: sleeper
+          image: busybox:1.37.0
+          command: ["sleep", "3600"]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 8Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: rightsize
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rightsize
+  updatePolicy:
+    updateMode: "Off"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: sleeper
+        minAllowed:
+          cpu: 10m
+          memory: 8Mi
+        maxAllowed:
+          cpu: 200m
+          memory: 64Mi
+        controlledResources: ["cpu", "memory"]
+        controlledValues: RequestsOnly

@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notebook
+spec:
+  clusterIP: None
+  selector:
+    app: stateful-notebook
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: notebook
+spec:
+  serviceName: notebook
+  replicas: 2
+  podManagementPolicy: OrderedReady
+  minReadySeconds: 3
+  updateStrategy:
+    type: RollingUpdate
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  selector:
+    matchLabels:
+      app: stateful-notebook
+  template:
+    metadata:
+      labels:
+        app: stateful-notebook
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 15
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: notebook
+          image: busybox:1.37.0
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          command:
+            - sh
+            - -ec
+            - |
+              if [ ! -f /data/identity.txt ]; then
+                printf 'Created by %s at %s\n' "$POD_NAME" "$(date -u +%FT%TZ)" > /data/identity.txt
+              fi
+              exec httpd -f -p 8080 -h /data
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /identity.txt
+              port: http
+            periodSeconds: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits: { cpu: 100m, memory: 32Mi }
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        storageClassName: standard
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 64Mi

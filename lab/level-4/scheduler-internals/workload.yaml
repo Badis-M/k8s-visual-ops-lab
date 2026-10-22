@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queued-web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: queued-web
+  template:
+    metadata:
+      labels:
+        app: queued-web
+    spec:
+      schedulerName: lab-unregistered
+      automountServiceAccountToken: false
+      containers:
+        - name: web
+          image: nginx:1.28.0-alpine
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi

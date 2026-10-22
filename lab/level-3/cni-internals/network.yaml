@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: source
+  labels:
+    app: network-source
+spec:
+  automountServiceAccountToken: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: DoesNotExist
+  containers:
+    - name: tools
+      image: busybox:1.37.0
+      command: ["sleep", "3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: destination
+  labels:
+    app: network-destination
+spec:
+  automountServiceAccountToken: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: DoesNotExist
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchLabels:
+              app: network-source
+  containers:
+    - name: web
+      image: nginx:1.28.0-alpine
+      ports:
+        - containerPort: 80
+          name: http
+      readinessProbe:
+        httpGet:
+          path: /
+          port: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: destination
+spec:
+  selector:
+    app: network-destination
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

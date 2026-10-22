@@ -1,0 +1,27 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: lab-owner-validation
+webhooks:
+  - name: owners.workshops.k8sops.dev
+    admissionReviewVersions: [v1]
+    sideEffects: None
+    failurePolicy: Fail
+    timeoutSeconds: 2
+    matchPolicy: Equivalent
+    namespaceSelector:
+      matchLabels:
+        lab.k8sops.dev/admission: enabled
+    rules:
+      - operations: [CREATE, UPDATE]
+        apiGroups: [""]
+        apiVersions: [v1]
+        resources: [configmaps]
+        scope: Namespaced
+    clientConfig:
+      service:
+        namespace: lab-admission
+        name: webhook
+        path: /validate
+        port: 443
+      caBundle: CA_BUNDLE_PLACEHOLDER
