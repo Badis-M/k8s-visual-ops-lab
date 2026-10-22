@@ -10,14 +10,15 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
 *.local
 
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-lab/app/__pycache__/
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
 
 # Editor directories and files
 .vscode/*
@@ -30,6 +31,17 @@ lab/app/__pycache__/
 *.sln
 *.sw?
 
-# Local Codex context
+# Local AI context
 /AGENTS.md
 /docs/PROJECT_CONTEXT.md
+
+# Python lab artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local environment files
+.env
+.env.*
+!.env.example
