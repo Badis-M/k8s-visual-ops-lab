@@ -65,6 +65,27 @@ Open the URL printed by Vite (port 8080 by default, on the local loopback interf
 
 The production build and TypeScript check are separate commands. Application tests do not validate a real Kubernetes cluster. Existing formatting/type-check issues should be reviewed separately from feature changes rather than hidden by disabling checks.
 
+## Quality, CI and HTTP security
+
+[Quality, security and CI evidence](docs/quality-security-ci.md) records the full 60-chapter bilingual review, offline validation and hosting limits. GitHub Actions checks every push/PR and supports manual runs; no deployment or cluster access is included.
+
+```bash
+bun run check:types
+bun run test
+bun run check:lint
+bun run check:labs
+bun run test:python
+bun run check:charts
+bun run check:dependencies
+bun run build
+bun x --no-install playwright install chromium
+bun run test:e2e
+```
+
+Python tests use the standard library; chart checks need Helm and kubectl but never contact a cluster. Go tests are described in the Operator README. `check:lint` freezes diagnostics only for unchanged inherited files; any edited/new file must pass all rules. `lint` remains the raw check and reports the existing formatting debt. Do not regenerate the lint baseline to accept new violations.
+
+Production HTML has a fresh request-scoped CSP nonce, no-store caching, framing protection, nosniff, referrer/feature policies and staged HTTPS HSTS (300 seconds). Static assets have separate `_headers` rules; these do not secure SSR by themselves. Google Fonts and the documented CSS-only inline-style exception remain. `test:e2e` runs the built Worker locally, not the Vite development server. These local checks do not establish a deployed protection or successful GitHub run.
+
 ## Repository map
 
 ```text

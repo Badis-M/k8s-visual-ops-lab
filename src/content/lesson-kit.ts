@@ -39,8 +39,8 @@ export const challenge = (title: L, task: L, hints: L[], solution: Block[]): Blo
 export const labContext = (namespace: string): Block[] => [
   h("lab-preparation", "Prepare an isolated exercise", "Préparer un exercice isolé"),
   p(
-    "Use the disposable kind lab described in lab/README.md (Kubernetes 1.35). Run commands from the repository root. The following alias always targets its explicit context; it does not change your global kubectl context. Do not reuse a namespace containing your own resources.",
-    "Utilisez le lab kind jetable décrit dans lab/README.md (Kubernetes 1.35). Exécutez les commandes depuis la racine du dépôt. L’alias suivant cible toujours son contexte explicite, sans changer votre contexte kubectl global. Ne réutilisez pas un namespace contenant vos propres ressources.",
+    "Use the disposable kind lab described in lab/README.md (Kubernetes 1.35). Run commands from the repository root. The following alias always targets its explicit context; it does not change your global kubectl context. Stop if namespace creation returns AlreadyExists or any other error. Inspect it before proceeding; a failed create never authorizes its deletion.",
+    "Utilisez le lab kind jetable décrit dans lab/README.md (Kubernetes 1.35). Exécutez les commandes depuis la racine du dépôt. L’alias suivant cible toujours son contexte explicite, sans changer votre contexte kubectl global. Arrêtez-vous si la création retourne AlreadyExists ou une autre erreur. Inspectez-le avant de poursuivre ; une création échouée n’autorise jamais sa suppression.",
   ),
   code(
     "bash",

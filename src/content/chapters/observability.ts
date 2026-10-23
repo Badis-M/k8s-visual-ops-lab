@@ -198,7 +198,15 @@ export const observability: Chapter = {
       [
         code(
           "bash",
-          "obs stop collector\ncurl -i http://127.0.0.1:8008/work\nobs logs --tail=30 app\nobs start collector\ncurl --fail-with-body http://127.0.0.1:8008/work\nobs logs --tail=50 collector",
+          "obs stop collector\ncurl -i http://127.0.0.1:8008/work\nobs logs --tail=30 app",
+        ),
+        p(
+          'Keep the Collector stopped while inspecting Prometheus. After at least two five-second scrape intervals, evaluate up{job="lab-collector"} and inspect the target\'s actual scrape error. Confirm the application response independently. Only then run the recovery block below; restarting immediately would make the intended sensor failure difficult to observe.',
+          'Gardez le Collector arrêté pendant l’inspection de Prometheus. Après au moins deux intervalles de collecte de cinq secondes, évaluez up{job="lab-collector"} et examinez l’erreur réelle de la cible. Vérifiez séparément la réponse applicative. Lancez ensuite seulement le bloc de récupération : un redémarrage immédiat rendrait la panne du capteur difficile à observer.',
+        ),
+        code(
+          "bash",
+          "obs start collector\ncurl --fail-with-body http://127.0.0.1:8008/work\nobs logs --tail=50 collector",
         ),
         p(
           "Expected: the app can continue returning 200 while the target becomes DOWN after scrape failure. After restart and new exports, UP and fresh records recover. SDK queues are bounded and the debug exporter is not durable: some observations may be lost. Correlate timestamps instead of treating old graph samples as current health.",

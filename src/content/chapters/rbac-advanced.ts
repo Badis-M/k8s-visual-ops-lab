@@ -183,7 +183,15 @@ export const rbacAdvanced: Chapter = {
       [
         code(
           "bash",
-          "k delete clusterrole lab-ops-config-observer\nk get clusterrole lab-ops-observer -o yaml\nk -n lab-rbac-advanced auth can-i list pods --as=system:serviceaccount:lab-rbac-advanced:observer\nk -n lab-rbac-advanced get configmap release-settings --as=system:serviceaccount:lab-rbac-advanced:observer",
+          "k delete clusterrole lab-ops-config-observer\nk get clusterrole lab-ops-observer -o yaml --watch",
+        ),
+        p(
+          "Stop the watch with Ctrl+C once the generated ConfigMap rule disappears. Then run these two checks. Deleting the contributor returns before the aggregation controller necessarily removes its copied rule, so an immediate read could still succeed briefly.",
+          "Arrêtez le watch avec Ctrl+C quand la règle ConfigMap générée disparaît, puis lancez les deux contrôles suivants. La suppression du contributeur se termine avant le retrait nécessairement effectif de sa règle agrégée ; une lecture immédiate pourrait donc encore réussir brièvement.",
+        ),
+        code(
+          "bash",
+          "k -n lab-rbac-advanced auth can-i list pods --as=system:serviceaccount:lab-rbac-advanced:observer\nk -n lab-rbac-advanced get configmap release-settings --as=system:serviceaccount:lab-rbac-advanced:observer",
         ),
         p(
           "After the generated ConfigMap rule disappears, expected results are yes for Pods and Forbidden for the ConfigMap. Continued access means another grant may exist or reconciliation has not completed. Enumerate applicable bindings and groups; a grant cannot be canceled by adding a fictional deny rule.",

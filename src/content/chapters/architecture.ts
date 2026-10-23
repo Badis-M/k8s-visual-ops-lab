@@ -123,8 +123,8 @@ export const architecture: Chapter = {
         {
           field: "kube-proxy",
           text: {
-            en: "Watches Services and EndpointSlices and programs iptables/IPVS rules on the node so traffic sent to a Service's virtual IP is forwarded to one of its Pods. Some CNIs (e.g. Cilium) can replace it.",
-            fr: "Surveille les Services et EndpointSlices et programme des règles iptables/IPVS sur le nœud pour que le trafic envoyé à l'IP virtuelle d'un Service soit redirigé vers un de ses Pods. Certains CNI (ex. Cilium) peuvent le remplacer.",
+            en: "Watches Services and EndpointSlices and programs the configured iptables, nftables or IPVS dataplane on the node so traffic sent to a Service's virtual IP is forwarded to one of its Pods. Some CNIs (e.g. Cilium) can replace it.",
+            fr: "Surveille les Services et EndpointSlices et programme le dataplane configuré iptables, nftables ou IPVS sur le nœud pour que le trafic envoyé à l'IP virtuelle d'un Service soit redirigé vers un de ses Pods. Certains CNI (ex. Cilium) peuvent le remplacer.",
           },
         },
       ],
@@ -156,8 +156,8 @@ export const architecture: Chapter = {
           fr: "`kubectl` lit votre kubeconfig, trouve l'adresse de l'API server et les identifiants, et envoie l'objet en HTTPS (côté serveur, une création ou un patch).",
         },
         {
-          en: "The API server authenticates you, checks RBAC, runs admission (defaults are filled in), validates, and writes the Deployment to etcd. kubectl returns `deployment.apps/k8s-ops-api-deployment created` — nothing is running yet.",
-          fr: "L'API server vous authentifie, vérifie le RBAC, exécute l'admission (les valeurs par défaut sont ajoutées), valide, puis écrit le Deployment dans etcd. kubectl affiche `deployment.apps/k8s-ops-api-deployment created` — rien ne tourne encore.",
+          en: "The API server authenticates you, checks RBAC, runs admission (defaults are filled in), validates, and writes the Deployment to etcd. kubectl returns `deployment.apps/k8s-ops-api-deployment created` — this confirms API acceptance, without waiting for Pods to run.",
+          fr: "L'API server vous authentifie, vérifie le RBAC, exécute l'admission (les valeurs par défaut sont ajoutées), valide, puis écrit le Deployment dans etcd. kubectl affiche `deployment.apps/k8s-ops-api-deployment created` — cela confirme l’acceptation API, sans attendre le démarrage des Pods.",
         },
         {
           en: "The Deployment controller (in the controller manager) is notified through its watch, and creates a ReplicaSet. The ReplicaSet controller sees a ReplicaSet wanting 2 Pods and 0 existing, and creates 2 Pod objects — with no node assigned.",
@@ -258,11 +258,11 @@ export const architecture: Chapter = {
           title: { en: "Ask the API directly", fr: "Interroger directement l'API" },
           code: {
             lang: "bash",
-            code: "k get --raw /readyz?verbose | tail -n 5\nk get deployment hello -v=6 2>&1 | grep GET",
+            code: "k get --raw '/readyz?verbose' | tail -n 5\nk get deployment hello -v=6 2>&1 | grep GET",
           },
           explain: {
-            en: "`--raw` calls an API path directly. `-v=6` makes kubectl print the HTTP requests it sends — proof that kubectl is just an API client.",
-            fr: "`--raw` appelle directement un chemin de l'API. `-v=6` affiche les requêtes HTTP envoyées par kubectl — la preuve que kubectl n'est qu'un client de l'API.",
+            en: "`--raw` calls an API path directly. Quote paths containing ? so Bash/Zsh pass the query string literally rather than expanding a filename pattern. `-v=6` makes kubectl print the HTTP requests it sends — proof that kubectl is just an API client.",
+            fr: "`--raw` appelle directement un chemin de l'API. Protégez les chemins contenant ? avec des guillemets pour que Bash/Zsh transmettent la requête littéralement sans expansion de noms de fichiers. `-v=6` affiche les requêtes HTTP envoyées par kubectl — la preuve que kubectl n'est qu'un client de l'API.",
           },
           expected: {
             text: {

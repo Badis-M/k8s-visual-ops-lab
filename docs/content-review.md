@@ -134,3 +134,8 @@ The browser copy button returned success feedback; the IAB clipboard readback AP
 This remains a static/pedagogical and local application review. Real Kubernetes admission/defaulting, API-to-webhook TLS, image availability, informer/GC behavior, CNI policy/Service forwarding, metrics autoscaling, CSI snapshots, GitOps/telemetry stacks, backup/etcd recovery and physical HA are unexecuted. No site test substitutes for those learner-run experiments. The legacy readiness/dependency/hardening limitations above remain explicitly documented, not fixed by an unrelated lab redesign.
 
 Implementation and review are complete. Next work is separate runtime lab execution and recording actual observations on a disposable environment. Commit/push/deployment remain with Badis. Recommended review commit: `fix: clarify course examples and correct lab workflows`.
+
+
+## Follow-up review — 2026-10-23
+
+A second full bilingual review and production security/CI validation is recorded in [quality-security-ci.md](quality-security-ci.md), with exact per-level inventories in quality-review-levels-1-2.md, quality-review-level-3.md and quality-review-level-4.md. This earlier report retains its dated evidence; see the follow-up for current corrections and check counts. No cluster execution or deployment was added.

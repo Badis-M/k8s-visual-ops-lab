@@ -111,7 +111,7 @@ export const kustomize: Chapter = {
     h("offline", "Build before contacting the API", "Construire avant de contacter l’API"),
     code(
       "bash",
-      "kubectl version --client -o yaml\nkubectl kustomize lab/level-3/kustomize/overlays/dev > /tmp/overlay-dev.yaml\nkubectl kustomize lab/level-3/kustomize/overlays/prod > /tmp/overlay-prod.yaml\ndiff -u /tmp/overlay-dev.yaml /tmp/overlay-prod.yaml",
+      'LAB_OVERLAY_RENDER_DIR=$(mktemp -d)\nprintf \'Overlay render directory: %s\\n\' "$LAB_OVERLAY_RENDER_DIR"\nkubectl version --client -o yaml\nkubectl kustomize lab/level-3/kustomize/overlays/dev > "$LAB_OVERLAY_RENDER_DIR/dev.yaml"\nkubectl kustomize lab/level-3/kustomize/overlays/prod > "$LAB_OVERLAY_RENDER_DIR/prod.yaml"\ndiff -u "$LAB_OVERLAY_RENDER_DIR/dev.yaml" "$LAB_OVERLAY_RENDER_DIR/prod.yaml"',
     ),
     p(
       "The client version reports the bundled Kustomize version, which can differ across kubectl installations. The lab baseline uses kubectl 1.35.x; record the renderer used for a review and CI. diff exit code 1 means the expected differences exist. Inspect names, namespaces, replica counts, resource requests and generated references in the YAML. No controller, cluster connection or Helm plugin is required to build these local overlays.",
@@ -232,8 +232,8 @@ export const kustomize: Chapter = {
     challenge(
       l("An offline preview", "Une preview hors ligne"),
       l(
-        "Copy the kustomize exercise tree to /tmp/kustomize-exercise, add overlays/preview, and render a three-replica preview with its own namespace and prefix. Keep base selectors unchanged and explain which inherited defaults still apply. Do not apply it to a cluster for this challenge.",
-        "Copiez l’arbre de l’exercice dans /tmp/kustomize-exercise, ajoutez overlays/preview puis rendez une preview à trois réplicas avec namespace et préfixe distincts. Gardez les sélecteurs de base et expliquez les défauts hérités. N’appliquez pas cette variante au cluster pour ce défi.",
+        "Copy the kustomize exercise tree into a new private temporary directory, add overlays/preview, and render a three-replica preview with its own namespace and prefix. Keep base selectors unchanged and explain which inherited defaults still apply. Do not apply it to a cluster for this challenge.",
+        "Copiez l’arbre de l’exercice dans un nouveau répertoire temporaire privé, ajoutez overlays/preview puis rendez une preview à trois réplicas avec namespace et préfixe distincts. Gardez les sélecteurs de base et expliquez les défauts hérités. N’appliquez pas cette variante au cluster pour ce défi.",
       ),
       [
         l(
@@ -247,11 +247,19 @@ export const kustomize: Chapter = {
       ],
       [
         code(
+          "bash",
+          'LAB_KUSTOMIZE_PREVIEW_DIR=$(mktemp -d)\nprintf \'Preview directory: %s\\n\' "$LAB_KUSTOMIZE_PREVIEW_DIR"\ncp -R lab/level-3/kustomize/. "$LAB_KUSTOMIZE_PREVIEW_DIR/"\nmkdir "$LAB_KUSTOMIZE_PREVIEW_DIR/overlays/preview"',
+        ),
+        p(
+          "Create kustomization.yaml inside overlays/preview of the printed copy with the following contents. Keep LAB_KUSTOMIZE_PREVIEW_DIR in this shell; the render command uses it. The repository's original tree stays unchanged.",
+          "Créez kustomization.yaml dans overlays/preview de la copie affichée avec le contenu suivant. Gardez LAB_KUSTOMIZE_PREVIEW_DIR dans ce shell ; la commande de rendu l’utilise. L’arbre original du dépôt reste inchangé.",
+        ),
+        code(
           "yaml",
           "apiVersion: kustomize.config.k8s.io/v1beta1\nkind: Kustomization\nresources:\n  - ../../base\nnamespace: lab-kustomize-preview\nnamePrefix: preview-\nreplicas:\n  - name: web\n    count: 3",
-          "/tmp/kustomize-exercise/overlays/preview/kustomization.yaml",
+          "$LAB_KUSTOMIZE_PREVIEW_DIR/overlays/preview/kustomization.yaml",
         ),
-        code("bash", "kubectl kustomize /tmp/kustomize-exercise/overlays/preview"),
+        code("bash", 'kubectl kustomize "$LAB_KUSTOMIZE_PREVIEW_DIR/overlays/preview"'),
         p(
           "The render has three preview-web replicas and a renamed ConfigMap reference. With no generator override, it serves Base learning configuration and keeps the base memory settings. Existing dev/prod inputs remain untouched. This is a useful review property: differences are explicit rather than hidden inside copied resource files.",
           "Le rendu contient trois réplicas preview-web et une référence de ConfigMap renommée. Sans surcharge de générateur, il sert Base learning configuration et conserve la mémoire de base. Les entrées dev/prod restent intactes. La revue peut ainsi identifier les différences explicitement au lieu de les chercher dans des ressources copiées.",
@@ -260,8 +268,8 @@ export const kustomize: Chapter = {
     ),
     h("cleanup", "Remove both isolated applications", "Supprimer les deux applications isolées"),
     p(
-      "Stop port-forward first. Deleting these dedicated namespaces also removes obsolete generated ConfigMaps from earlier experiments. It would be inappropriate in a namespace shared with unrelated applications. Local rendering alone creates no API resources to clean up.",
-      "Arrêtez d’abord port-forward. Supprimer ces namespaces dédiés retire aussi les anciennes ConfigMaps générées. Cela serait inapproprié dans un namespace partagé avec d’autres applications. Un rendu local seul ne crée aucune ressource API à nettoyer.",
+      "Stop port-forward first. Deleting these dedicated namespaces also removes obsolete generated ConfigMaps from earlier experiments. It would be inappropriate in a namespace shared with unrelated applications. Local rendering alone creates no API resources to clean up. Inspect the printed render/preview directories, then manually remove only those copies when finished.",
+      "Arrêtez d’abord port-forward. Supprimer ces namespaces dédiés retire aussi les anciennes ConfigMaps générées. Cela serait inapproprié dans un namespace partagé avec d’autres applications. Un rendu local seul ne crée aucune ressource API à nettoyer. Examinez les répertoires render/preview affichés puis retirez manuellement ces copies uniquement lorsque vous avez terminé.",
     ),
     code("bash", "k delete namespace lab-kustomize-dev lab-kustomize-prod"),
   ],

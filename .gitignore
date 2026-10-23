@@ -45,3 +45,7 @@ venv/
 .env
 .env.*
 !.env.example
+
+# Browser test artifacts
+playwright-report/
+test-results/

@@ -14,7 +14,11 @@
 - [ ] Execute isolated backup/restore, etcd recovery and failure scenarios; record observed recovery limits
 - [x] Translate the original guided lab (/lab) and displayed source descriptions to French
 - [x] Review all 60 courses, literal code rendering/copying and practical workflow corrections (see docs/content-review.md)
-- [ ] Review inherited repository-wide formatting violations separately
+- [x] Add push/PR/manual CI with frozen dependencies, offline lab checks and production browser tests
+- [x] Prepare and locally test request-scoped SSR CSP, static headers and staged HSTS
+- [x] Freeze inherited lint diagnostics while rejecting new or modified-file violations
+- [ ] Resolve inherited repository-wide formatting debt separately
+- [ ] Observe the first remote CI run and verify new security headers after deployment
 - [ ] Choose and validate SSR hosting and domain configuration
 
 Content availability is not cluster execution evidence. See [implementation status](docs/content-implementation.md) and [official sources](docs/content-sources.md).

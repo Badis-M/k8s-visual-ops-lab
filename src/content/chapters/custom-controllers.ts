@@ -145,11 +145,11 @@ export const customControllers: Chapter = {
         ),
         code: {
           lang: "bash",
-          code: "alias k='kubectl --context kind-k8s-ops-lab'\nkubectl --context kind-k8s-ops-lab -n lab-operator apply -f lab/level-4/crds/hello.yaml\nkubectl --context kind-k8s-ops-lab -n lab-operator wait --for=condition=Ready greeting/hello --timeout=180s\nkubectl --context kind-k8s-ops-lab -n lab-operator get greeting hello -o yaml\nkubectl --context kind-k8s-ops-lab -n lab-operator port-forward service/hello 8082:8080",
+          code: "alias k='kubectl --context kind-k8s-ops-lab'\nLAB_GREETING_GENERATION=$(kubectl --context kind-k8s-ops-lab -n lab-operator apply -f lab/level-4/crds/hello.yaml -o jsonpath='{.metadata.generation}')\nkubectl --context kind-k8s-ops-lab -n lab-operator wait --for=jsonpath='{.status.observedGeneration}'=\"$LAB_GREETING_GENERATION\" greeting/hello --timeout=180s\nkubectl --context kind-k8s-ops-lab -n lab-operator wait --for=condition=Ready greeting/hello --timeout=180s\nkubectl --context kind-k8s-ops-lab -n lab-operator get greeting hello -o yaml\nkubectl --context kind-k8s-ops-lab -n lab-operator port-forward service/hello 8082:8080",
         },
         explain: l(
-          "Use curl --fail http://127.0.0.1:8082/ from a third terminal. Port 8081 belongs to the local manager's health endpoint and 8080 may belong to this website.",
-          "Lancez curl --fail http://127.0.0.1:8082/ depuis un troisième terminal. Le port 8081 appartient à la santé du manager local et 8080 peut servir ce site.",
+          "The apply returns the exact desired generation; wait until status observes it before accepting Ready, including when resuming this example. Use curl --fail http://127.0.0.1:8082/ from a third terminal. Port 8081 belongs to the local manager's health endpoint and 8080 may belong to this website.",
+          "L’apply retourne la génération désirée exacte ; attendez son observation avant de retenir Ready, y compris en reprenant cet exemple. Lancez curl --fail http://127.0.0.1:8082/ depuis un troisième terminal. Le port 8081 appartient à la santé du manager local et 8080 peut servir ce site.",
         ),
         expected: {
           text: l(

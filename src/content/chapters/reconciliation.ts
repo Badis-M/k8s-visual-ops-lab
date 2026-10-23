@@ -25,15 +25,15 @@ export const reconciliation: Chapter = {
     {
       type: "p",
       text: {
-        en: "An imperative instruction says how: “start a container, then start another one”. If the second command fails, or a container dies later, the instructions are already finished — nobody re-runs them. A declarative specification says what: “there should be 2 replicas”. It stays true over time, and something is responsible for keeping it true.",
-        fr: "Une instruction impérative dit comment : « démarre un conteneur, puis un autre ». Si la deuxième commande échoue, ou qu'un conteneur meurt plus tard, les instructions sont déjà terminées — personne ne les relance. Une spécification déclarative dit quoi : « il doit y avoir 2 réplicas ». Elle reste vraie dans le temps, et quelque chose est chargé de la maintenir vraie.",
+        en: "An imperative instruction says how: “start a container, then start another one”. If the second command fails, or a container dies later, the instructions are already finished — nobody re-runs them. A declarative specification says what: “there should be 2 replicas”. It remains recorded as the target over time, and a controller works toward it when capacity and dependencies permit.",
+        fr: "Une instruction impérative dit comment : « démarre un conteneur, puis un autre ». Si la deuxième commande échoue, ou qu'un conteneur meurt plus tard, les instructions sont déjà terminées — personne ne les relance. Une spécification déclarative dit quoi : « il doit y avoir 2 réplicas ». Elle reste enregistrée comme cible dans le temps, et un contrôleur cherche à l’atteindre lorsque capacité et dépendances le permettent.",
       },
     },
     {
       type: "p",
       text: {
-        en: "Almost every Kubernetes object has two parts: `spec` — the desired state you write — and `status` — the observed state that controllers and kubelets write. Your job is to edit `spec`. The system's job is to make `status` match it.",
-        fr: "Presque chaque objet Kubernetes a deux parties : `spec` — l'état désiré que vous écrivez — et `status` — l'état observé écrit par les contrôleurs et les kubelets. Votre travail est de modifier `spec`. Celui du système est de faire correspondre `status`.",
+        en: "Almost every Kubernetes object has two parts: `spec` — the desired state you write — and `status` — the observed state that controllers and kubelets write. Your job is to edit `spec`. Controllers try to converge the observed workload toward that target; errors and missing capacity can leave a visible difference.",
+        fr: "Presque chaque objet Kubernetes a deux parties : `spec` — l'état désiré que vous écrivez — et `status` — l'état observé écrit par les contrôleurs et les kubelets. Votre travail est de modifier `spec`. Les contrôleurs essaient de rapprocher le workload observé de cette cible ; erreurs ou manque de capacité peuvent laisser un écart visible.",
       },
     },
     {
@@ -86,7 +86,7 @@ export const reconciliation: Chapter = {
           title: { en: "Declare 3 replicas", fr: "Déclarer 3 réplicas" },
           code: {
             lang: "bash",
-            code: "k create deployment reconcile-demo --image=nginx:1.27 --replicas=3\nk get pods -l app=reconcile-demo",
+            code: "k create deployment reconcile-demo --image=nginx:1.27 --replicas=3\nk rollout status deployment/reconcile-demo --timeout=120s\nk get pods -l app=reconcile-demo",
           },
           explain: {
             en: "`kubectl create deployment` generates a Deployment whose Pods carry the label `app=reconcile-demo`; `-l` filters on that label.",

@@ -30,7 +30,7 @@ Fake-client tests cover deterministic children, repeated calls with no extra wri
 - One owned ConfigMap (`<name>-content`), Deployment (`<name>`) and Service (`<name>`) are reconciled. Message content is HTML-escaped before serving; this API accepts plain text, not arbitrary HTML.
 - Existing unowned or differently owned children are preserved and reported as conflicts. The controller never silently adopts matching names.
 - Only managed fields are changed. API-defaulted container fields are explicit to avoid update loops; immutable selector differences require an explicit migration.
-- Ready requires current Deployment observedGeneration, desired replica counts and updated/ready/available replicas. Status records the Greeting generation evaluated, and writes only when observations change.
+- Ready requires current Deployment observedGeneration, desired replica counts and updated/ready/available replicas. After apply or patch, wait for the exact Greeting generation returned by that write before waiting for Ready, so a previous true condition cannot validate new intent. Status records the Greeting generation evaluated, and writes only when observations change.
 - Pause leaves children unchanged, reports Ready false/Paused and retains a clearly potentially stale readyReplicas observation.
 - Owned child API resources use Kubernetes garbage collection; no external cleanup justifies a finalizer here. The controller owns desired replicas, so do not add an HPA independently writing the same child field.
 
@@ -56,7 +56,8 @@ The explicit context is required outside Kubernetes: with no context argument, t
 From a second terminal at the repository root:
 
 ```bash
-kubectl --context kind-k8s-ops-lab -n lab-operator apply -f lab/level-4/crds/hello.yaml
+LAB_GREETING_GENERATION=$(kubectl --context kind-k8s-ops-lab -n lab-operator apply -f lab/level-4/crds/hello.yaml -o jsonpath='{.metadata.generation}')
+kubectl --context kind-k8s-ops-lab -n lab-operator wait --for=jsonpath='{.status.observedGeneration}'="$LAB_GREETING_GENERATION" greeting/hello --timeout=180s
 kubectl --context kind-k8s-ops-lab -n lab-operator wait --for=condition=Ready greeting/hello --timeout=180s
 kubectl --context kind-k8s-ops-lab -n lab-operator get greetings,deployments,services,configmaps
 kubectl --context kind-k8s-ops-lab -n lab-operator port-forward service/hello 8082:8080

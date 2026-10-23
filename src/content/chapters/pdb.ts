@@ -88,7 +88,7 @@ export const pdb: Chapter = {
       {
         type: "code",
         lang: "bash",
-        code: 'TARGET_POD="$(k -n lab-pdb get pods -l app=protected -o jsonpath=\'{.items[0].metadata.name}\')"\nprintf \'{"apiVersion":"policy/v1","kind":"Eviction","metadata":{"name":"%s","namespace":"lab-pdb"}}\' "$TARGET_POD" > /tmp/lab-eviction.json\nk create --raw "/api/v1/namespaces/lab-pdb/pods/$TARGET_POD/eviction" -f /tmp/lab-eviction.json\nk -n lab-pdb wait --for=delete "pod/$TARGET_POD" --timeout=120s\nk -n lab-pdb rollout status deployment/protected --timeout=120s\nk -n lab-pdb wait --for=jsonpath=\'{.status.disruptionsAllowed}\'=1 pdb/protected --timeout=120s\nk -n lab-pdb get pdb protected',
+        code: 'LAB_EVICTION_FILE=$(mktemp)\nprintf \'Eviction request file: %s\\n\' "$LAB_EVICTION_FILE"\nTARGET_POD="$(k -n lab-pdb get pods -l app=protected -o jsonpath=\'{.items[0].metadata.name}\')"\nprintf \'{"apiVersion":"policy/v1","kind":"Eviction","metadata":{"name":"%s","namespace":"lab-pdb"}}\' "$TARGET_POD" > "$LAB_EVICTION_FILE"\nk create --raw "/api/v1/namespaces/lab-pdb/pods/$TARGET_POD/eviction" -f "$LAB_EVICTION_FILE"\nk -n lab-pdb wait --for=delete "pod/$TARGET_POD" --timeout=120s\nk -n lab-pdb rollout status deployment/protected --timeout=120s\nk -n lab-pdb wait --for=jsonpath=\'{.status.disruptionsAllowed}\'=1 pdb/protected --timeout=120s\nk -n lab-pdb get pdb protected',
       },
       {
         type: "p",
@@ -108,7 +108,7 @@ export const pdb: Chapter = {
       {
         type: "code",
         lang: "bash",
-        code: "k -n lab-pdb scale deployment/protected --replicas=2\nk -n lab-pdb rollout status deployment/protected --timeout=120s\nk -n lab-pdb get pdb protected --watch",
+        code: "k -n lab-pdb scale deployment/protected --replicas=2\nk -n lab-pdb rollout status deployment/protected --timeout=120s\nk -n lab-pdb get pdb protected -o yaml --watch",
       },
       {
         type: "p",
@@ -120,7 +120,7 @@ export const pdb: Chapter = {
       {
         type: "code",
         lang: "bash",
-        code: 'TARGET_POD="$(k -n lab-pdb get pods -l app=protected -o jsonpath=\'{.items[0].metadata.name}\')"\nprintf \'{"apiVersion":"policy/v1","kind":"Eviction","metadata":{"name":"%s","namespace":"lab-pdb"}}\' "$TARGET_POD" > /tmp/lab-eviction.json\nk create --raw "/api/v1/namespaces/lab-pdb/pods/$TARGET_POD/eviction" -f /tmp/lab-eviction.json',
+        code: 'TARGET_POD="$(k -n lab-pdb get pods -l app=protected -o jsonpath=\'{.items[0].metadata.name}\')"\nprintf \'{"apiVersion":"policy/v1","kind":"Eviction","metadata":{"name":"%s","namespace":"lab-pdb"}}\' "$TARGET_POD" > "$LAB_EVICTION_FILE"\nk create --raw "/api/v1/namespaces/lab-pdb/pods/$TARGET_POD/eviction" -f "$LAB_EVICTION_FILE"',
       },
       {
         type: "h2",
@@ -278,7 +278,7 @@ export const pdb: Chapter = {
       {
         type: "code",
         lang: "bash",
-        code: "k delete namespace lab-pdb",
+        code: "k delete namespace lab-pdb\nprintf 'Temporary request file to inspect and remove manually: %s\\n' \"$LAB_EVICTION_FILE\"",
       },
     ] satisfies Block[]),
   ],

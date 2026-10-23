@@ -77,7 +77,7 @@ export const setupKind: Chapter = {
       type: "code",
       lang: "bash",
       title: "Linux / WSL2 (amd64)",
-      code: 'curl -fLO https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl\ncurl -fLO https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl.sha256\nprintf "%s  kubectl\\n" "$(cat kubectl.sha256)" | sha256sum --check\n# Install only after the checksum succeeds.\nsudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl\nrm kubectl kubectl.sha256\nkubectl version --client',
+      code: 'curl -fLO https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl\ncurl -fLO https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl.sha256\nprintf "%s  kubectl\\n" "$(cat kubectl.sha256)" | sha256sum --check &&\n  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl\n# Stop if download, checksum or installation fails.\nrm kubectl kubectl.sha256\nkubectl version --client',
     },
     {
       type: "code",
@@ -97,7 +97,7 @@ export const setupKind: Chapter = {
       type: "code",
       lang: "bash",
       title: "Linux / WSL2 (amd64)",
-      code: "curl -fLo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-amd64\n# Review the matching official release checksum before installation.\nchmod +x ./kind\nsudo mv ./kind /usr/local/bin/kind\nkind version",
+      code: "curl -fLO https://github.com/kubernetes-sigs/kind/releases/download/v0.31.0/kind-linux-amd64\ncurl -fLO https://github.com/kubernetes-sigs/kind/releases/download/v0.31.0/kind-linux-amd64.sha256sum\nsha256sum --check kind-linux-amd64.sha256sum && sudo install -m 0755 kind-linux-amd64 /usr/local/bin/kind\n# Stop if download, checksum or installation fails.\nkind version",
     },
     {
       type: "code",
@@ -136,8 +136,8 @@ export const setupKind: Chapter = {
             code: "kind get clusters\n# Continue only if k8s-lab is absent.\nkind create cluster --name k8s-lab --image kindest/node:v1.35.0",
           },
           explain: {
-            en: "`--name` lets you run several clusters side by side. kind writes credentials into `~/.kube/config` and switches your current context to `kind-k8s-lab`.",
-            fr: "`--name` permet de faire tourner plusieurs clusters côte à côte. kind écrit les identifiants dans `~/.kube/config` et bascule votre contexte courant sur `kind-k8s-lab`.",
+            en: "`--name` lets you run several clusters side by side. kind writes credentials into the selected kubeconfig (normally `~/.kube/config`; KUBECONFIG can change this) and switches its current context to `kind-k8s-lab`.",
+            fr: "`--name` permet de faire tourner plusieurs clusters côte à côte. kind écrit les identifiants dans le kubeconfig choisi (normalement `~/.kube/config` ; KUBECONFIG peut changer ce chemin) et y sélectionne le contexte `kind-k8s-lab`.",
           },
           expected: {
             text: { en: "A final line similar to:", fr: "Une dernière ligne similaire à :" },

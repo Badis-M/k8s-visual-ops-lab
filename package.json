@@ -12,7 +12,14 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:labs": "bun scripts/check-labs.mjs"
+    "check:labs": "bun scripts/check-labs.mjs",
+    "check:types": "tsc --noEmit",
+    "check:lint": "bun scripts/check-lint.mjs",
+    "test:python": "python3 scripts/test-python.py",
+    "check:charts": "bash scripts/check-charts.sh",
+    "preview:worker": "wrangler dev --config .output/server/wrangler.json --local --ip 127.0.0.1 --port 8787 --inspector-port 0",
+    "test:e2e": "playwright test",
+    "check:dependencies": "bun audit"
   },
   "overrides": {
     "rolldown": "1.2.1"
@@ -73,6 +80,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
+    "@playwright/test": "1.64.1",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
     "@types/node": "^22.16.5",
@@ -90,7 +98,8 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "8.1.5",
-    "vitest": "^4.1.10"
+    "vite": "8.1.6",
+    "vitest": "^4.1.12",
+    "wrangler": "4.151.3"
   }
 }

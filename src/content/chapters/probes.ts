@@ -110,13 +110,13 @@ export const probes: Chapter = {
       {
         type: "code",
         lang: "bash",
-        code: 'k -n lab-probes patch deployment probed --type=strategic -p \'{"spec":{"template":{"spec":{"containers":[{"name":"web","readinessProbe":{"httpGet":{"path":"/missing-health","port":80}}}]}}}}\'\nk -n lab-probes get pods\nk -n lab-probes describe deployment probed\nk -n lab-probes get events --sort-by=.metadata.creationTimestamp',
+        code: 'k -n lab-probes patch deployment probed --type=strategic -p \'{"spec":{"template":{"spec":{"containers":[{"name":"web","readinessProbe":{"httpGet":{"path":"/missing-health","port":80}}}]}}}}\'\nk -n lab-probes rollout status deployment/probed --timeout=30s\nk -n lab-probes get pods\nk -n lab-probes describe deployment probed\nk -n lab-probes get events --sort-by=.metadata.creationTimestamp',
       },
       {
         type: "p",
         text: {
-          en: "Changing the template starts a rollout. New replicas should fail readiness with HTTP 404, while old ready replicas can remain because the default rolling strategy protects some availability. Do not conclude that every Service endpoint disappeared: compare old and new Pod readiness and EndpointSlices. New unready Pods should not restart solely because of readiness failure; use their restart counters as evidence.",
-          fr: "Modifier le template démarre un rollout. Les nouveaux réplicas doivent échouer en readiness avec HTTP 404, tandis que d’anciens réplicas prêts peuvent rester grâce à la stratégie progressive par défaut. Ne concluez pas que tous les endpoints ont disparu : comparez anciens et nouveaux Pods et EndpointSlices. Les nouveaux Pods ne doivent pas redémarrer pour la seule readiness ; examinez les compteurs.",
+          en: "Changing the template starts a rollout. The bounded status command should time out; inspect the new Pod’s HTTP 404 readiness Events before running the recovery block. New replicas should fail readiness with HTTP 404, while old ready replicas can remain because the default rolling strategy protects some availability. Do not conclude that every Service endpoint disappeared: compare old and new Pod readiness and EndpointSlices. New unready Pods should not restart solely because of readiness failure; use their restart counters as evidence.",
+          fr: "Modifier le template démarre un rollout. La commande de statut bornée doit atteindre son délai ; examinez les Events de readiness HTTP 404 du nouveau Pod avant le bloc de récupération. Les nouveaux réplicas doivent échouer en readiness avec HTTP 404, tandis que d’anciens réplicas prêts peuvent rester grâce à la stratégie progressive par défaut. Ne concluez pas que tous les endpoints ont disparu : comparez anciens et nouveaux Pods et EndpointSlices. Les nouveaux Pods ne doivent pas redémarrer pour la seule readiness ; examinez les compteurs.",
         },
       },
       {

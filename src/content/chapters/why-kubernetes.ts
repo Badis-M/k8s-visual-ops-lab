@@ -124,8 +124,8 @@ export const whyKubernetes: Chapter = {
       type: "list",
       items: [
         {
-          en: "Scheduling — choosing a machine with enough free CPU and memory for each container.",
-          fr: "Ordonnancement — choisir une machine ayant assez de CPU et mémoire libres pour chaque conteneur.",
+          en: "Scheduling — choosing a node whose allocatable capacity can fit a Pod’s declared requests alongside existing reservations; this is not a live CPU-usage check.",
+          fr: "Ordonnancement — choisir un nœud dont la capacité allocatable satisfait les requests déclarées du Pod avec les réservations existantes ; ce n’est pas une mesure de l’usage CPU instantané.",
         },
         {
           en: "Self-healing — restarting failed containers and replacing those lost with a dead machine.",
@@ -192,11 +192,11 @@ export const whyKubernetes: Chapter = {
           title: { en: "Run a container", fr: "Lancer un conteneur" },
           code: {
             lang: "bash",
-            code: "docker run -d --name web -p 127.0.0.1:8083:80 nginx:1.27\ncurl -s localhost:8083 | head -n 4",
+            code: "docker run -d --name web -p 127.0.0.1:8083:80 nginx:1.27\ncurl --silent --show-error --fail --retry 5 --retry-connrefused --retry-delay 1 --max-time 3 http://127.0.0.1:8083/ | head -n 4",
           },
           explain: {
-            en: "`-d` runs the container in the background, `--name web` gives it a stable name, and `-p 127.0.0.1:8083:80` publishes container port 80 on loopback host port 8083.",
-            fr: "`-d` lance le conteneur en arrière-plan, `--name web` lui donne un nom stable et `-p 127.0.0.1:8083:80` publie le port 80 du conteneur sur le port local 8083 de l’hôte.",
+            en: "`-d` runs the container in the background, `--name web` gives it a stable name, and `-p 127.0.0.1:8083:80` publishes container port 80 on loopback host port 8083. curl retries connection refusal within a bounded budget because starting the container does not mean nginx is already listening.",
+            fr: "`-d` lance le conteneur en arrière-plan, `--name web` lui donne un nom stable et `-p 127.0.0.1:8083:80` publie le port 80 du conteneur sur le port local 8083 de l’hôte. curl réessaie les refus de connexion dans un budget borné : un conteneur démarré n’implique pas que nginx écoute déjà.",
           },
           expected: {
             text: {

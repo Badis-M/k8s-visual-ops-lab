@@ -131,11 +131,11 @@ export const deployments: Chapter = {
           title: { en: "Self-healing", fr: "Auto-réparation" },
           code: {
             lang: "bash",
-            code: "k delete pod -l app=web --wait=false\nk get pods -l app=web",
+            code: "k delete pod -l app=web --wait=false\nk get pods -l app=web\nk rollout status deployment/web --timeout=180s",
           },
           explain: {
-            en: "Deleting all three Pods at once: the ReplicaSet immediately creates three replacements.",
-            fr: "Les trois Pods sont supprimés d'un coup : le ReplicaSet crée immédiatement trois remplaçants.",
+            en: "Deleting all three Pods at once deliberately removes every serving copy and can interrupt the application. The ReplicaSet creates replacements; wait for recovery before scaling. Automatic replacement does not imply uninterrupted service.",
+            fr: "Supprimer les trois Pods d’un coup retire volontairement toutes les copies en service et peut interrompre l’application. Le ReplicaSet crée des remplaçants ; attendez la récupération avant le scaling. Un remplacement automatique ne signifie pas une disponibilité continue.",
           },
           expected: {
             text: {
@@ -146,7 +146,10 @@ export const deployments: Chapter = {
         },
         {
           title: { en: "Scale", fr: "Mettre à l'échelle" },
-          code: { lang: "bash", code: "k scale deployment web --replicas=5\nk get rs -l app=web" },
+          code: {
+            lang: "bash",
+            code: "k scale deployment web --replicas=5\nk rollout status deployment/web --timeout=180s\nk get rs -l app=web",
+          },
           explain: {
             en: "Scaling changes only `replicas`, not the template, so no new ReplicaSet is created — the existing one grows.",
             fr: "La mise à l'échelle ne change que `replicas`, pas le template : aucun nouveau ReplicaSet, l'existant grandit.",
@@ -192,8 +195,8 @@ export const deployments: Chapter = {
       },
       hints: [
         {
-          en: "`kubectl rollout status` will hang; interrupt it with Ctrl+C.",
-          fr: "`kubectl rollout status` restera bloqué ; interrompez-le avec Ctrl+C.",
+          en: "The bounded rollout status command should time out. Inspect the failing Pod and old replicas before running undo; the CLI timeout is not the controller progress deadline.",
+          fr: "La commande de statut bornée doit atteindre son délai. Examinez le Pod en échec et les anciens réplicas avant undo ; ce délai CLI n’est pas le délai de progression du contrôleur.",
         },
         {
           en: "Look at READY counts on both ReplicaSets.",
@@ -204,7 +207,7 @@ export const deployments: Chapter = {
         {
           type: "code",
           lang: "bash",
-          code: "k set image deployment/web web=nginx:9.99-broken\nk get rs -l app=web        # new RS: 1 desired, 0 ready; old RS: all ready\nk get pods -l app=web      # one Pod in ImagePullBackOff\nk rollout undo deployment/web\nk rollout status deployment/web --timeout=180s\nk delete deployment web",
+          code: "k set image deployment/web web=nginx:9.99-broken\nk rollout status deployment/web --timeout=30s\nk get rs -l app=web        # new RS: 1 desired, 0 ready; old RS: all ready\nk get pods -l app=web      # one Pod in ImagePullBackOff\nk rollout undo deployment/web\nk rollout status deployment/web --timeout=180s\nk delete deployment web",
         },
         {
           type: "p",

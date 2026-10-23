@@ -164,7 +164,7 @@ export const advancedScheduling: Chapter = {
       "Conserver une garantie stricte avec une capacité honnête",
     ),
     challenge(
-      l("Two independent hosts, not three", "Deux hôtes distincts, pas trois"),
+      l("Two eligible hostnames, not three", "Deux hostnames admissibles, pas trois"),
       l(
         "Resolve strict-web's Pending replica while retaining strict hostname separation and without editing nodes. Explain what is lost compared with three desired replicas and why spread-web still allows three.",
         "Résolvez le réplica Pending de strict-web en gardant la séparation hostname stricte, sans modifier de nœud. Expliquez ce qui est perdu par rapport à trois réplicas désirés et pourquoi spread-web en permet toujours trois.",

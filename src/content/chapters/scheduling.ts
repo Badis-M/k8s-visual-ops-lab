@@ -83,11 +83,11 @@ export const scheduling: Chapter = {
         title: l("Observe an impossible intersection", "Observer une intersection impossible"),
         code: {
           lang: "bash",
-          code: "k -n lab-scheduling apply -f lab/level-2/scheduling/web.yaml\nk -n lab-scheduling get pods -o wide\nk -n lab-scheduling describe pods -l app=scheduling-web",
+          code: "k -n lab-scheduling apply -f lab/level-2/scheduling/web.yaml\nk -n lab-scheduling rollout status deployment/web --timeout=30s\nk -n lab-scheduling get pods -o wide\nk -n lab-scheduling describe pods -l app=scheduling-web",
         },
         explain: l(
-          "The selector requires reserved, but the only matching worker repels Pods without a toleration. Read FailedScheduling Events instead of waiting for container logs that cannot exist yet.",
-          "Le sélecteur impose reserved, mais le seul worker correspondant repousse les Pods sans tolérance. Lisez les Events FailedScheduling au lieu d’attendre des logs de conteneur encore inexistants.",
+          "The bounded rollout status command is expected to time out. The selector requires reserved, but the only matching worker repels Pods without a toleration. Read FailedScheduling Events instead of waiting for container logs that cannot exist yet.",
+          "La commande de statut bornée doit atteindre son délai. Le sélecteur impose reserved, mais le seul worker correspondant repousse les Pods sans tolérance. Lisez les Events FailedScheduling au lieu d’attendre des logs de conteneur encore inexistants.",
         ),
         expected: {
           text: l(

@@ -16,12 +16,20 @@ The live paths are optional and separate. Argo CD deploys into `lab-gitops-argo`
 Source templates contain explicit `REPLACE_*` markers and must not be applied directly. Generate temporary configuration with the complete remote commit SHA:
 
 ```bash
+LAB_GITOPS_OUTPUT_DIR=$(mktemp -d)
+printf 'GitOps configuration directory: %s\n' "$LAB_GITOPS_OUTPUT_DIR"
 python3 lab/level-3/gitops/configure.py \
   --repository https://github.com/YOUR_ACCOUNT/k8s-visual-ops-lab.git \
   --commit YOUR_FULL_REMOTE_COMMIT_SHA \
-  --output-dir /tmp/academy-gitops
+  --output-dir "$LAB_GITOPS_OUTPUT_DIR"
 ```
 
-Replace the repository and commit arguments with actual reviewed values. The script validates a credential-free HTTPS URL and a full nonzero 40-character SHA, writes only the two named files in the chosen output directory, and never contacts Git or Kubernetes. It does not prove remote reachability or trust. Repository authentication and encrypted secret delivery require separate setup; no credential is embedded here.
+Replace the repository and commit arguments with actual reviewed values. The script validates a credential-free HTTPS URL and a full nonzero 40-character SHA, writes only the two named files in the chosen output directory, and never contacts Git or Kubernetes. It refuses existing output files and symbolic-link output directories; use a new private directory for each revision rather than overwriting a previous review. Keep the variable in the same shell for the chapter's apply commands. Inspect the printed directories and remove only your temporary copies manually afterwards. It does not prove remote reachability or trust. Repository authentication and encrypted secret delivery require separate setup; no credential is embedded here.
+
+Run the generator regression tests without Git or Kubernetes:
+
+```bash
+python3 -m unittest discover -s lab/level-3/gitops -p 'test_*.py' -v
+```
 
 The Argo AppProject permits only Deployment, Service and ConfigMap in the dedicated destination. The Application deliberately has no cascading deletion finalizer. Flux's namespaced reconciler Role permits only those three resource kinds; `deletionPolicy: Orphan` makes final cleanup explicit. Neither configuration manages controller installation, RBAC bootstrap or Namespace objects from the watched application path.

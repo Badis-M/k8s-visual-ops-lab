@@ -1,0 +1,95 @@
+name: Quality and security
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  BUN_VERSION: 1.4.2
+  NODE_VERSION: 24.21.0
+  WRANGLER_SEND_METRICS: "false"
+jobs:
+  application:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run check:types
+      - run: bun run test
+      - run: bun run check:lint
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: 3.13.7
+      - run: bun run check:labs
+      - run: bun run build
+      - run: bun x --no-install playwright install --with-deps chromium
+      - run: bun run test:e2e
+  dependency-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      # Network/service failures fail visibly, just like detected advisories.
+      - run: bun run check:dependencies
+  lab-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: 3.13.7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.25.14
+          cache: false
+      - run: python3 scripts/test-python.py
+      - run: go test ./...
+        working-directory: lab/level-4/custom-controllers/greeting-operator
+        env:
+          GOTOOLCHAIN: local
+  offline-renders:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: 3.13.7
+      - name: Install checksum-pinned rendering tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          workdir=$(mktemp -d)
+          trap 'rm -rf "$workdir"' EXIT
+          curl --fail --silent --show-error --location https://get.helm.sh/helm-v4.3.0-linux-amd64.tar.gz --output "$workdir/helm.tar.gz"
+          echo '86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb  '"$workdir/helm.tar.gz" | sha256sum --check
+          tar -xzf "$workdir/helm.tar.gz" -C "$workdir"
+          sudo install "$workdir/linux-amd64/helm" /usr/local/bin/helm
+          curl --fail --silent --show-error --location https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl --output "$workdir/kubectl"
+          echo 'a2e984a18a0c063279d692533031c1eff93a262afcc0afdc517375432d060989  '"$workdir/kubectl" | sha256sum --check
+          sudo install "$workdir/kubectl" /usr/local/bin/kubectl
+      - run: bash scripts/check-charts.sh

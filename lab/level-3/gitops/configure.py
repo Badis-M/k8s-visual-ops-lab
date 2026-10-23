@@ -34,14 +34,24 @@ def main() -> None:
         parser.error("repository contains unsupported YAML characters")
 
     source_dir = Path(__file__).resolve().parent
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    for filename in ("argocd.yaml", "flux.yaml"):
+    if args.output_dir.is_symlink():
+        parser.error("output directory must not be a symbolic link")
+    args.output_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    filenames = ("argocd.yaml", "flux.yaml")
+    for filename in filenames:
+        destination = args.output_dir / filename
+        # A broken link also belongs to the caller; never replace its target.
+        if destination.exists() or destination.is_symlink():
+            parser.error(f"refusing to overwrite {destination}; choose a new output directory")
+    for filename in filenames:
         source = (source_dir / filename).read_text(encoding="utf-8")
         rendered = source.replace("REPLACE_REPO_URL", args.repository).replace(
             "REPLACE_COMMIT_SHA", args.commit.lower()
         )
         destination = args.output_dir / filename
-        destination.write_text(rendered, encoding="utf-8")
+        # Exclusive creation also refuses a file introduced after the preflight.
+        with destination.open("x", encoding="utf-8") as output:
+            output.write(rendered)
         print(destination)
 
 

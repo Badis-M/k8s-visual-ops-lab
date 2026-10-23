@@ -2,9 +2,11 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { nonceContext } from "./server/nonce.server";
+import { createNonce, secureResponse } from "./server/security";
 
 type ServerEntry = {
-  fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
+  fetch: (request: Request) => Promise<Response> | Response;
 };
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
@@ -45,17 +47,24 @@ function isH3SwallowedErrorBody(body: string): boolean {
 }
 
 export default {
-  async fetch(request: Request, env: unknown, ctx: unknown) {
-    try {
-      const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
-    } catch (error) {
-      console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
-    }
+  fetch(request: Request) {
+    return nonceContext.run(createNonce(), async () => {
+      const nonce = nonceContext.getStore()!;
+      const protect = (response: Response) =>
+        import.meta.env.PROD ? secureResponse(response, request, nonce) : response;
+      try {
+        const handler = await getServerEntry();
+        const response = await handler.fetch(request);
+        return protect(await normalizeCatastrophicSsrResponse(response));
+      } catch (error) {
+        console.error(error);
+        return protect(
+          new Response(renderErrorPage(), {
+            status: 500,
+            headers: { "content-type": "text/html; charset=utf-8" },
+          }),
+        );
+      }
+    });
   },
 };

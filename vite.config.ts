@@ -17,7 +17,9 @@ export default defineConfig(({ command }) => ({
       },
     }),
     // Preserve the existing production target without emulating Workers in dev.
-    ...(command === "build" ? [nitro({ preset: "cloudflare-module" })] : []),
+    ...(command === "build"
+      ? [nitro({ preset: "cloudflare-module", compatibilityDate: "2026-10-23" })]
+      : []),
     react(),
   ],
   resolve: {

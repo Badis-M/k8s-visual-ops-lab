@@ -1,0 +1,136 @@
+{
+  "description": "Frozen existing diagnostics; any source/config/diagnostic change requires review. Never regenerate automatically in CI.",
+  "configHash": "74ef3de0e7b14dcceb1b8f9af78d349edc610b273a1a85f0c817182a7d7c2982",
+  "files": {
+    "src/components/academy/LevelBadge.tsx": {
+      "sourceHash": "78dc42e072e6e8abe6610a51e518c79b1ba8d13089b9d32caae9ed475c3af8c7",
+      "fingerprint": "f78b46cd7b740c1f8b37833c2ade054551b9901052a9efae5c124aab99f3d4a9",
+      "diagnostics": 5
+    },
+    "src/components/academy/Quiz.tsx": {
+      "sourceHash": "5f1c85a942fdcca27dc0de2816e53bfc63591743c0af32c459521f3416e53714",
+      "fingerprint": "9be2246fce4458380a8e9a83dd7e7aaeca9830b9317a03132eb5f92fbf66a5fd",
+      "diagnostics": 14
+    },
+    "src/components/academy/RichText.tsx": {
+      "sourceHash": "d9fe50f884f56b521b42a5944e056eb202463eb34cb218b2e06026e6ce129b5d",
+      "fingerprint": "716b4fea226bfe0e5b40c3108c14a4a5afb6532d765389461047dae59b3a4a4f",
+      "diagnostics": 1
+    },
+    "src/components/academy/SiteHeader.tsx": {
+      "sourceHash": "561196364788b699969f96f91ae75aff10a8d9a28d06088a4160c269314910a7",
+      "fingerprint": "3e824157cbfef0175299cf105701165c691ab38107a1acff8fb359d5a17b50cc",
+      "diagnostics": 8
+    },
+    "src/components/diagrams/ArchitectureDiagram.tsx": {
+      "sourceHash": "cb7aa7b1df94ef8c80eb21c1e4144b3bf8c3f318e625d3db9cc093e764117385",
+      "fingerprint": "7c3ca86265c085d20c7e438efcd21d1fc296d76a79f248649a8dacced6bd2f97",
+      "diagnostics": 75
+    },
+    "src/components/diagrams/ReconcileDiagram.tsx": {
+      "sourceHash": "a5009091e93c104ed75704ac73b76922e125dba4cf456ea80ff57f15d0844aa6",
+      "fingerprint": "a8786b0ce7fb120d5364bd46ca0a217543537875ddbc4531e8409af015814035",
+      "diagnostics": 18
+    },
+    "src/components/diagrams/SmallDiagrams.tsx": {
+      "sourceHash": "bc1205ac6e94893c6cf9783e7d4d4513570d4bf5ea3ffbef1f7f3d51a075e22d",
+      "fingerprint": "10d4a863142d2cafe6fbf854d75ad358d6399ada86f0c929dfd802d0f6b19223",
+      "diagnostics": 31
+    },
+    "src/components/ui/badge.tsx": {
+      "sourceHash": "6519775252fe729f21c60b92c7c9feefd1fe7d0a8c2cf16d6f1c2fa7e153fe75",
+      "fingerprint": "1b7b7ffc9ad8f2c718db1d367529983290185500a60bc55a77bb4dacd2312050",
+      "diagnostics": 1
+    },
+    "src/components/ui/button.tsx": {
+      "sourceHash": "e39813b666ba434660ec088356a0349246b6803a4e99961295d0c82bab1ab862",
+      "fingerprint": "ec241b18a084e2659abcab6b0ba6cc2047ad04b693aaf6a07ba256dd9a2052dc",
+      "diagnostics": 1
+    },
+    "src/components/ui/form.tsx": {
+      "sourceHash": "1ed53d4ab564a64708938643de590f2bef3718b0b2a309c1019c57e9c1fde23f",
+      "fingerprint": "f76ebc2a339b66198c1e4c9ce7a5bafc448c20fe41244211df99acd3d82f3892",
+      "diagnostics": 1
+    },
+    "src/components/ui/navigation-menu.tsx": {
+      "sourceHash": "755aecc77b7911ab61159c9fbb9b25254009eb4c32c95b1430b6b5b7d37ed8f0",
+      "fingerprint": "e4fae870238677f547a30ae97e8d2797c3483cc73038d2d947e4b66c67e8b740",
+      "diagnostics": 1
+    },
+    "src/components/ui/sidebar.tsx": {
+      "sourceHash": "9f44f4523271f965adec608ae1c3b8a2f350f2f45ba1401a2c7ee33bc5eda238",
+      "fingerprint": "98e53feaa08ed5e1b38d491d744a358378c53d537ce24572a654679b262d097b",
+      "diagnostics": 1
+    },
+    "src/components/ui/toggle.tsx": {
+      "sourceHash": "62e6e21993f1ab633b9f830cbbf0c181f3d161bae3a7792dbf2d842d42a2f09c",
+      "fingerprint": "ac6ed567a2db4145a306ac63a54a609b6ed665290c9cca01b5ef614700346b9a",
+      "diagnostics": 1
+    },
+    "src/content/chapters/configmaps-secrets.ts": {
+      "sourceHash": "9d50a97c139c081210805b7fba6263a2397a75487b56357de526f73a5604751c",
+      "fingerprint": "81913d3414a51c4abb2ecee62a0825517b161f6abaef59410963689b0777af07",
+      "diagnostics": 395
+    },
+    "src/content/chapters/kubectl-troubleshooting.ts": {
+      "sourceHash": "f17115431d243678534f4bc3ce159350afac843a97b52030de83bf8fd2f653ee",
+      "fingerprint": "62e6b9c93e79181b7e6ce7e3382412b7e766b0a0e3887e94eca9462c34645023",
+      "diagnostics": 397
+    },
+    "src/content/chapters/labels-selectors.ts": {
+      "sourceHash": "42653de701ad1f66f9e1da9bb2c59f79089a5f150593bafb64fab239ca73c9e6",
+      "fingerprint": "f20a52ca259705c17aaf9d43113b75e61698b3195a7d4381d37e08a3fb11612c",
+      "diagnostics": 371
+    },
+    "src/content/chapters/namespaces-contexts.ts": {
+      "sourceHash": "03b3030df7bc1212a9b29ed80472a5d1532e51305621e4993f1b5d45435e79cb",
+      "fingerprint": "1ac180c44791bd82dc38c1880d2f0f11758ca27730f7251baa6166ffce23f46d",
+      "diagnostics": 361
+    },
+    "src/content/quiz.ts": {
+      "sourceHash": "d9dad67e67c36f3ab2381b9a565c72da4735f1871862646c9924e7203aadbc02",
+      "fingerprint": "c0381ec8bd9023c5f20f191938ec2754726ccada2a79a7d76a806d68c8f1afa1",
+      "diagnostics": 1
+    },
+    "src/lib/i18n.tsx": {
+      "sourceHash": "4bb3baf7cf267f60faed90235418b2dd6a88d1bb69d12a84de4bfe955e2b9a4f",
+      "fingerprint": "0c3a3b2bf34078fed3e9a06a63ad006595d1ef75670c953e8ec07c81635fd71b",
+      "diagnostics": 3
+    },
+    "src/lib/progress.tsx": {
+      "sourceHash": "5c5b93e8b72b11ce8b89c0007fc55f5129f470262463361cd509d0965d1213eb",
+      "fingerprint": "17ca7fae291b796fdb7cc93a017d74713bc3bdc391927b0c99ab2d3cb428f549",
+      "diagnostics": 1
+    },
+    "src/routes/academy.tsx": {
+      "sourceHash": "f964b50cef8d2d3799075207207f41050a3f2a320695a7b4d92f9638ff171e2e",
+      "fingerprint": "7c2cfb66c484f0eec53e3b6f85b80ccfd556e68eececc39e4637631fbf01e399",
+      "diagnostics": 12
+    },
+    "src/routes/index.tsx": {
+      "sourceHash": "356b68ec951c189b508c8580c4ffbea48cbe3419d6ed46b01f2122e1396f98ec",
+      "fingerprint": "131b4ea670a1db8ef0635b0b535b5611ed94e6af93db7a3585d001eea688752f",
+      "diagnostics": 19
+    },
+    "src/routes/k8s-basics.tsx": {
+      "sourceHash": "faef0abf05085987b65eec774d94273652eaff46b6eb4d6ca3cecbcb724711d1",
+      "fingerprint": "7bce93559467b6db783ea1bc8c8225cfcb57f5879559e60c6aec07a0f3552546",
+      "diagnostics": 1
+    },
+    "src/routes/learn.$chapterId.tsx": {
+      "sourceHash": "825fe3fd2522195fd9c10ad1a8f456f88901672a95c3732a3c7c800aaa0035fd",
+      "fingerprint": "16961abda29db118187924b5b8ba7df59c1746964504f69de17714cf2497076c",
+      "diagnostics": 25
+    },
+    "src/routes/prerequisites.tsx": {
+      "sourceHash": "4cd28eab052f4051b28a0ff7c8ccf8d46398e6ac0c7fe6949dbb75e1393967b7",
+      "fingerprint": "30ea80dbb07e2097a3bc17985b6d7b55102859430300797d9f8b839c7c6f4d2b",
+      "diagnostics": 1
+    },
+    "src/test/beginner-integration.test.tsx": {
+      "sourceHash": "151724923f8a53479563465360dea3506154aeedf8fa66e08b9ed7e0da42c8f8",
+      "fingerprint": "a3e81806a49aead1e1b643a058c4b02e441ec06cc0c6191e800ed7794f4538b2",
+      "diagnostics": 6
+    }
+  }
+}

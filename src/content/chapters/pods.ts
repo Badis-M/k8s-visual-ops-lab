@@ -29,8 +29,8 @@ export const pods: Chapter = {
     {
       type: "p",
       text: {
-        en: "Pods are ephemeral and disposable. They are never “moved” or “repaired”: when a node dies or a Pod is deleted, a controller creates a brand-new Pod with a new UID; a StatefulSet may reuse the name and the network may reuse an IP. That is why you rarely create bare Pods in practice — you create Deployments that create Pods for you. But understanding the Pod itself is essential for debugging.",
-        fr: "Les Pods sont éphémères et jetables. On ne les « déplace » ni ne les « répare » jamais : quand un nœud tombe ou qu'un Pod est supprimé, un contrôleur crée un tout nouveau Pod avec un nouvel UID ; un StatefulSet peut réutiliser le nom et le réseau peut réattribuer une IP. C'est pourquoi on crée rarement des Pods nus en pratique — on crée des Deployments qui les créent. Mais comprendre le Pod lui-même est indispensable pour déboguer.",
+        en: "Pods are ephemeral and disposable. They are never “moved” or “repaired”: when a managed Pod must be replaced after node loss or deletion, its controller can create a brand-new Pod with a new UID; a StatefulSet may reuse the name and the network may reuse an IP. That is why you rarely create bare Pods in practice — you create Deployments that create Pods for you. But understanding the Pod itself is essential for debugging.",
+        fr: "Les Pods sont éphémères et jetables. On ne les « déplace » ni ne les « répare » jamais : lorsqu’un Pod géré doit être remplacé après perte de nœud ou suppression, son contrôleur peut créer un tout nouveau Pod avec un nouvel UID ; un StatefulSet peut réutiliser le nom et le réseau peut réattribuer une IP. C'est pourquoi on crée rarement des Pods nus en pratique — on crée des Deployments qui les créent. Mais comprendre le Pod lui-même est indispensable pour déboguer.",
       },
     },
     {
@@ -99,8 +99,8 @@ export const pods: Chapter = {
         {
           field: "resources.limits",
           text: {
-            en: "Hard ceiling enforced by cgroups. Exceeding the memory limit gets the container OOMKilled.",
-            fr: "Plafond strict appliqué par les cgroups. Dépasser la limite mémoire provoque un OOMKill du conteneur.",
+            en: "CPU limits normally throttle CPU time. Memory enforcement is reactive: when the kernel cannot reclaim enough memory within the limit, it can OOM-kill a process. Inspect termination details rather than inferring the cause from an exit code alone.",
+            fr: "Une limite CPU réduit normalement le temps CPU disponible par throttling. La mémoire est régulée de façon réactive : si le noyau ne peut pas en récupérer assez dans la limite, il peut tuer un processus par OOM. Examinez la terminaison sans déduire sa cause du seul code de sortie.",
           },
         },
         {
@@ -163,8 +163,8 @@ export const pods: Chapter = {
         [
           { en: "OOMKilled", fr: "OOMKilled" },
           {
-            en: "Container exceeded its memory limit",
-            fr: "Le conteneur a dépassé sa limite mémoire",
+            en: "The kernel killed a process for memory exhaustion; inspect the container limit and node memory pressure",
+            fr: "Le noyau a tué un processus par manque de mémoire ; inspectez la limite du conteneur et la pression mémoire du nœud",
           },
           { en: "`lastState.terminated.reason`", fr: "`lastState.terminated.reason`" },
         ],
@@ -184,7 +184,10 @@ export const pods: Chapter = {
       steps: [
         {
           title: { en: "Create the Pod", fr: "Créer le Pod" },
-          code: { lang: "bash", code: "k apply -f pod.yaml\nk get pod hello -o wide" },
+          code: {
+            lang: "bash",
+            code: "k apply -f pod.yaml\nk wait --for=condition=Ready pod/hello --timeout=120s\nk get pod hello -o wide",
+          },
           explain: {
             en: "Save the manifest above as `pod.yaml`. `-o wide` shows the Pod IP and the node it was scheduled on.",
             fr: "Enregistrez le manifeste ci-dessus sous `pod.yaml`. `-o wide` affiche l'IP du Pod et le nœud choisi.",
@@ -220,8 +223,8 @@ export const pods: Chapter = {
             code: "k port-forward pod/hello 8081:80\n# in another terminal\ncurl -s localhost:8081 | grep title",
           },
           explain: {
-            en: "`port-forward` tunnels a local port to the Pod through the API server. Great for debugging; not a way to expose apps (that's Services).",
-            fr: "`port-forward` crée un tunnel d'un port local vers le Pod via l'API server. Idéal pour déboguer ; pas pour exposer une app (c'est le rôle des Services).",
+            en: "`port-forward` tunnels a local port to the Pod through the API server. Great for debugging; not a way to expose apps (that's Services). After the curl check in the second terminal, stop the foreground tunnel with Ctrl+C in the first terminal before continuing.",
+            fr: "`port-forward` crée un tunnel d'un port local vers le Pod via l'API server. Idéal pour déboguer ; pas pour exposer une app (c'est le rôle des Services). Après curl dans le second terminal, arrêtez le tunnel avec Ctrl+C dans le premier avant de poursuivre.",
           },
           expected: {
             text: {
