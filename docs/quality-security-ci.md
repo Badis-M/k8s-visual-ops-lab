@@ -124,6 +124,16 @@ Not established: a successful **GitHub** run, remote branch protection, deployme
 
 ## Owner actions after push
 
+### CI follow-up: missing local Helm dependency
+
+The first remote `offline-renders` run failed because `release-demo/charts/academy-web` was absent. The other jobs were green according to the owner's report; no remote run was independently inspected for this follow-up. The original local render check incorrectly relied on an already-built, Git-ignored `charts/` directory, which a fresh checkout does not contain.
+
+`scripts/check-charts.sh` now copies both charts into an isolated temporary tree, removes any copied generated dependency, then runs `helm dependency build --skip-refresh` before linting and rendering. The checked-in `Chart.lock` must stay identical (`cmp`); the dependency is resolved through its existing local `file://` path. No vendored archive, dependency version change or chart edit is needed. See [Helm dependency build](https://helm.sh/docs/helm/helm_dependency_build/) for reconstruction from the lock rather than dependency renegotiation.
+
+Verification used a temporary export of **only tracked HEAD files**: the original script reproduced the missing-dependency failure; the corrected script passed both chart lints/templates and all three Kustomize renders with Helm 4.3.0 and kubectl 1.35.0/Kustomize 5.7.1. The checkout's parent chart remained free of generated `charts/` and its lock was unchanged. Bash syntax and `git diff --check` passed. This verifies the local fix; a new GitHub execution remains pending the owner's commit/push. No cluster or deployment was contacted.
+
+### Deployment and verification
+
 1. Open GitHub Actions → **Quality and security** and inspect all four jobs. Repository settings/branch protection are untouched; require these checks in the existing branch rule if desired. No GitHub secret is needed.
 2. Identify the origin/deployment pipeline actually serving the domain. Deploy the **SSR server and assets together** through that pipeline; client-only/static hosting cannot run this SSR entry. Keep the nonce wrapper and node async context support enabled.
 3. For an existing Cloudflare Worker deployment, the production build already generates the tested configuration at `.output/server/wrangler.json`. Its relevant shape is:
