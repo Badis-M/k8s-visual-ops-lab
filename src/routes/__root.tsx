@@ -105,6 +105,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const nonce = useRouter().options.ssr?.nonce;
+
   return (
     <html lang="en" className="dark">
       <head>
@@ -113,6 +115,14 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        {/* Cloudflare Web Analytics */}
+        <script
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "5b83c8beea424e25b3810d5d866a6752"}'
+          nonce={nonce}
+        />
+        {/* End Cloudflare Web Analytics */}
       </body>
     </html>
   );

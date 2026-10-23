@@ -5,7 +5,9 @@ export function createNonce(): string {
 }
 
 export function securityHeaders(request: Request, nonce?: string): Record<string, string> {
-  const scripts = nonce ? `'self' 'nonce-${nonce}'` : "'none'";
+  const scripts = nonce
+    ? `'self' 'nonce-${nonce}' https://static.cloudflareinsights.com`
+    : "'none'";
   const headers: Record<string, string> = {
     "Content-Security-Policy": [
       "default-src 'none'",
@@ -16,7 +18,7 @@ export function securityHeaders(request: Request, nonce?: string): Record<string
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data:",
       "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self'",
+      "connect-src 'self' https://cloudflareinsights.com",
       "object-src 'none'",
       "base-uri 'none'",
       "form-action 'self'",

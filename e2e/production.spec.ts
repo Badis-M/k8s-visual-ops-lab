@@ -1,5 +1,52 @@
 import { test, expect } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  // Exercise CSP and script lifecycle without sending test traffic to real analytics.
+  await page.route("https://static.cloudflareinsights.com/beacon.min.js", (route) =>
+    route.fulfill({
+      contentType: "text/javascript",
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: `window.cloudflareBeaconLoads = (window.cloudflareBeaconLoads || 0) + 1;
+        navigator.sendBeacon("https://cloudflareinsights.com/cdn-cgi/rum", "{}");`,
+    }),
+  );
+  await page.route("https://cloudflareinsights.com/cdn-cgi/rum", (route) =>
+    route.fulfill({ status: 204, headers: { "Access-Control-Allow-Origin": "*" } }),
+  );
+});
+
+test("analytics loads once across shared-layout navigation and language changes", async ({
+  page,
+}) => {
+  const violations: string[] = [];
+  const scriptRequests: string[] = [];
+  page.on("console", (message) => {
+    if (message.text().includes("Content Security Policy")) violations.push(message.text());
+  });
+  page.on("request", (request) => {
+    if (request.url() === "https://static.cloudflareinsights.com/beacon.min.js")
+      scriptRequests.push(request.url());
+  });
+  const collection = page.waitForRequest("https://cloudflareinsights.com/cdn-cgi/rum");
+  await page.goto("/");
+  await collection;
+  const beacon = page.locator("script[data-cf-beacon]");
+  await expect(beacon).toHaveCount(1);
+  await expect(beacon).toHaveAttribute("type", "module");
+  expect(JSON.parse((await beacon.getAttribute("data-cf-beacon"))!)).toEqual({
+    token: "5b83c8beea424e25b3810d5d866a6752",
+  });
+  await page.getByRole("link", { name: "Academy", exact: true }).click();
+  await expect(page).toHaveURL("/academy");
+  for (const language of ["fr", "en"]) {
+    await page.getByRole("button", { name: language, exact: true }).click();
+    await expect(beacon).toHaveCount(1);
+  }
+  expect(scriptRequests).toHaveLength(1);
+  expect(await page.evaluate(() => Reflect.get(window, "cloudflareBeaconLoads"))).toBe(1);
+  expect(violations).toEqual([]);
+});
+
 test("production SSR has unique nonces, secure errors and static assets", async ({ request }) => {
   const responses = await Promise.all(Array.from({ length: 4 }, () => request.get("/")));
   const nonces = new Set<string>();

@@ -49,12 +49,12 @@ The sampled public responses lacked the CSP, Referrer-Policy, HSTS, nosniff and 
 ```text
 Content-Security-Policy:
   default-src 'none';
-  script-src 'self' 'nonce-<fresh request nonce>';
+  script-src 'self' 'nonce-<fresh request nonce>' https://static.cloudflareinsights.com;
   script-src-attr 'none';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data:;
   font-src 'self' https://fonts.gstatic.com;
-  connect-src 'self';
+  connect-src 'self' https://cloudflareinsights.com;
   object-src 'none'; base-uri 'none';
   form-action 'self'; frame-ancestors 'none'
 Referrer-Policy: strict-origin-when-cross-origin
@@ -73,6 +73,16 @@ Strict-Transport-Security: max-age=300
 - HSTS is set only for application responses with an HTTPS URL outside loopback. Arbitrary `Forwarded`/`X-Forwarded-Proto` values are ignored. Start at **300 seconds**, without `includeSubDomains` or `preload`. After verifying actual HTTPS/origin routing and operational rollback, the owner can raise it progressively to 86400 and then a longer period. No preload submission was made.
 - HTML responses use `Cache-Control: private, no-store`, `CDN-Cache-Control: no-store` and `Cloudflare-CDN-Cache-Control: no-store`; validators are removed. The wrapper preserves the response stream. An external cache override must also respect this; caching nonce-bearing HTML is not supported.
 - `public/_headers` covers **static assets**, with nosniff/referrer/framing/CORP/HSTS and a document-restricting CSP. It does not replace the dynamic SSR wrapper. Nitro preserves these rules and adds immutable `/assets/*` caching. HSTS on HTTP static responses is ignored by browsers; dynamic responses still explicitly check HTTPS. The Vite development server does not enforce the production CSP, to support development/HMR.
+
+### Cloudflare Web Analytics
+
+The shared `RootShell` includes the owner's module-script snippet once, after the existing hydration scripts, with the current SSR nonce. All routes and both languages share this layout. No existing integration was found in the repository or the sampled public homepage before this change. No dependency, visual or lesson-content change is needed.
+
+The only added CSP origins are `https://static.cloudflareinsights.com` in `script-src` and `https://cloudflareinsights.com` in `connect-src`. Nonces and all other protections remain. The [Cloudflare FAQ](https://developers.cloudflare.com/web-analytics/faq/) documents the manual snippet's collection endpoint and recommends a single beacon per page. Static-resource CSP remains unchanged because it does not serve the application HTML.
+
+Browser regression tests substitute the beacon script and collector responses: they exercise script execution, allowed collection requests and a single script across SPA/language navigation without sending synthetic traffic to the real analytics account. They do not prove dashboard ingestion or deployed configuration. No Cloudflare settings were changed.
+
+Follow-up validation passed: 40 application tests, ten production-Worker Chromium tests (desktop/mobile), TypeScript, the inherited-lint gate, the SSR build and `git diff --check`. Existing large-bundle and ignored bundler-option warnings remain. No dependency or lockfile changed; no commit, push or deployment was performed.
 
 ## GitHub Actions
 

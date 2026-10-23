@@ -46,4 +46,16 @@ describe("production response security", () => {
     expect(headers["X-Content-Type-Options"]).toBe("nosniff");
     expect(headers["Cross-Origin-Embedder-Policy"]).toBeUndefined();
   });
+  it("permits the analytics script and collection origins without widening other directives", () => {
+    const nonce = createNonce();
+    const headers = securityHeaders(new Request("https://academy.example/"), nonce);
+    const directives = headers["Content-Security-Policy"]!.split("; ");
+    expect(directives).toContain(
+      `script-src 'self' 'nonce-${nonce}' https://static.cloudflareinsights.com`,
+    );
+    expect(directives).toContain("connect-src 'self' https://cloudflareinsights.com");
+    expect(directives).toContain("default-src 'none'");
+    expect(directives).toContain("frame-ancestors 'none'");
+    expect(directives.some((directive) => directive.includes("*"))).toBe(false);
+  });
 });
