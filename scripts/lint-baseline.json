@@ -17,11 +17,6 @@
       "fingerprint": "716b4fea226bfe0e5b40c3108c14a4a5afb6532d765389461047dae59b3a4a4f",
       "diagnostics": 1
     },
-    "src/components/academy/SiteHeader.tsx": {
-      "sourceHash": "561196364788b699969f96f91ae75aff10a8d9a28d06088a4160c269314910a7",
-      "fingerprint": "3e824157cbfef0175299cf105701165c691ab38107a1acff8fb359d5a17b50cc",
-      "diagnostics": 8
-    },
     "src/components/diagrams/ArchitectureDiagram.tsx": {
       "sourceHash": "cb7aa7b1df94ef8c80eb21c1e4144b3bf8c3f318e625d3db9cc093e764117385",
       "fingerprint": "7c3ca86265c085d20c7e438efcd21d1fc296d76a79f248649a8dacced6bd2f97",
@@ -106,11 +101,6 @@
       "sourceHash": "f964b50cef8d2d3799075207207f41050a3f2a320695a7b4d92f9638ff171e2e",
       "fingerprint": "7c2cfb66c484f0eec53e3b6f85b80ccfd556e68eececc39e4637631fbf01e399",
       "diagnostics": 12
-    },
-    "src/routes/index.tsx": {
-      "sourceHash": "356b68ec951c189b508c8580c4ffbea48cbe3419d6ed46b01f2122e1396f98ec",
-      "fingerprint": "131b4ea670a1db8ef0635b0b535b5611ed94e6af93db7a3585d001eea688752f",
-      "diagnostics": 19
     },
     "src/routes/k8s-basics.tsx": {
       "sourceHash": "faef0abf05085987b65eec774d94273652eaff46b6eb4d6ca3cecbcb724711d1",
