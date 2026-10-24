@@ -113,6 +113,17 @@ Only an unchanged file with identical diagnostics qualifies as inherited. Any ed
 
 Initial `bun audit --json` reported real advisories in transitive tools and Vite. Its dry-run plan was reviewed before applying compatible patches: brace-expansion 1.1.21/5.0.12, js-yaml 4.3.2, nanoid 3.3.18, source-map-js 1.2.2, Vite 8.1.6. Vitest 4.1.12 fixes the remaining pinned mocker advisories. No automatic major upgrade or audit ignore was used. New local/CI tools are exact dev dependencies; the 24-hour minimum release age is preserved. The resulting audit returned `{}` with exit 0 on the review date. This is an advisory-service snapshot, not proof that no vulnerabilities exist.
 
+#### Dependency audit follow-up — 2026-10-24
+
+A later CI audit reported three Undici advisories (GHSA-4qv8-2p9j-2685, GHSA-f72v-6w45-q472, GHSA-xjj6-f33q-929c) in 7.29.1 and GHSA-mrhx-c7xc-m3w5 in Zod 3.25.76/4.6.5. The reviewed fix plan could not update Undici because Miniflare 5.20261019.1-beta pins exactly 7.29.1; the root Zod 3 range also excluded the only patched Zod release.
+
+- Added the targeted package override `undici: 7.30.1`, retaining the installed Wrangler/Miniflare versions. This version supports Node >=20.18.1, including the project's Node 24 CI. Remove the override after a separately reviewed Miniflare upgrade naturally selects a safe version.
+- Removed the unused direct Zod 3 dependency after checking application/scripts for imports. No application schema/API migration was required. TanStack's existing `^4.5.4` constraints now resolve to Zod 4.6.6; the resolver's optional peer accepts Zod 4. No incompatible Zod override was added.
+- Both corrected versions predate the repository's 24-hour release-age window. Only these dependency resolutions changed; the CI audit remains blocking, with no advisory ignore or major stack upgrade.
+- Frozen installation, 40 application tests, TypeScript, inherited-lint gate, SSR build and ten production-Worker browser tests (desktop/mobile) passed. `bun run check:dependencies` returned **No vulnerabilities found (594 packages)** on this date. Remote CI still requires the owner's commit/push.
+
+Sources: [Zod advisory](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5), [Undici EventSource](https://github.com/advisories/GHSA-4qv8-2p9j-2685), [Undici SRI](https://github.com/advisories/GHSA-f72v-6w45-q472), [Undici content-encoding](https://github.com/advisories/GHSA-xjj6-f33q-929c), and official npm version metadata for release dates/engines. These advisories establish affected package versions; this review does not claim the deployed site's particular code paths were exploited or exploitable.
+
 ## Validation record
 
 Passed locally after integration:
