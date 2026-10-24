@@ -7,7 +7,7 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/lab")({
   head: () => ({
     meta: [
-      { title: "Guided lab: deploy a FastAPI app on kind — K8s Visual Ops Lab" },
+      { title: "Guided lab: deploy a FastAPI app on kind — Kubernetes Academy" },
       {
         name: "description",
         content:

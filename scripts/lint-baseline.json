@@ -97,20 +97,10 @@
       "fingerprint": "17ca7fae291b796fdb7cc93a017d74713bc3bdc391927b0c99ab2d3cb428f549",
       "diagnostics": 1
     },
-    "src/routes/academy.tsx": {
-      "sourceHash": "f964b50cef8d2d3799075207207f41050a3f2a320695a7b4d92f9638ff171e2e",
-      "fingerprint": "7c2cfb66c484f0eec53e3b6f85b80ccfd556e68eececc39e4637631fbf01e399",
-      "diagnostics": 12
-    },
     "src/routes/k8s-basics.tsx": {
       "sourceHash": "faef0abf05085987b65eec774d94273652eaff46b6eb4d6ca3cecbcb724711d1",
       "fingerprint": "7bce93559467b6db783ea1bc8c8225cfcb57f5879559e60c6aec07a0f3552546",
       "diagnostics": 1
-    },
-    "src/routes/learn.$chapterId.tsx": {
-      "sourceHash": "825fe3fd2522195fd9c10ad1a8f456f88901672a95c3732a3c7c800aaa0035fd",
-      "fingerprint": "16961abda29db118187924b5b8ba7df59c1746964504f69de17714cf2497076c",
-      "diagnostics": 25
     },
     "src/routes/prerequisites.tsx": {
       "sourceHash": "4cd28eab052f4051b28a0ff7c8ccf8d46398e6ac0c7fe6949dbb75e1393967b7",

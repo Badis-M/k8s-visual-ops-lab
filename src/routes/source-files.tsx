@@ -7,7 +7,7 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/source-files")({
   head: () => ({
     meta: [
-      { title: "Lab source files — K8s Visual Ops Lab" },
+      { title: "Lab source files — Kubernetes Academy" },
       {
         name: "description",
         content: "The FastAPI app, Dockerfile and Kubernetes manifests used in the guided lab.",

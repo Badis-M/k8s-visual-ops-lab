@@ -4,7 +4,7 @@ import { ui, useLang } from "@/lib/i18n";
 export function SiteHeader() {
   const { tr, lang, setLang } = useLang();
   const links = [
-    { to: "/academy", label: tr(ui.academy) },
+    { to: "/academy", label: tr({ en: "Courses", fr: "Cours" }) },
     { to: "/lab", label: tr(ui.lab) },
     { to: "/source-files", label: tr(ui.source) },
   ] as const;
@@ -19,7 +19,7 @@ export function SiteHeader() {
             <span className="relative flex size-7 items-center justify-center rounded-lg border border-primary/40 bg-primary/10">
               <span className="size-2.5 rotate-45 rounded-[3px] border-2 border-primary" />
             </span>
-            <span>K8s Visual Ops Lab</span>
+            <span>Kubernetes Academy</span>
           </Link>
         </div>
         <nav
@@ -61,21 +61,44 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const { lang } = useLang();
+  const links = [
+    { label: "Portfolio", href: "https://portfolio.badismerakchi.com/" },
+    { label: "Consulting", href: "https://consulting.badismerakchi.com/" },
+    { label: "Infra Academy", href: "https://academy.badismerakchi.com/" },
+    { label: "GitHub", href: "https://github.com/Badis-M/kubernetes-academy" },
+  ];
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-[90rem] flex-wrap items-center justify-between gap-3 px-6 py-8 text-sm text-muted-foreground">
-        <span>
-          K8s Visual Ops Lab —{" "}
-          {lang === "fr" ? "gratuit, open source, local" : "free, open source, local-first"}
-        </span>
-        <a
-          href="https://github.com/Badis-M/k8s-visual-ops-lab"
-          className="hover:text-foreground"
-          target="_blank"
-          rel="noreferrer"
+      <div className="mx-auto flex max-w-[90rem] flex-col gap-5 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-8">
+        <div>
+          <p className="font-medium text-foreground">Kubernetes Academy</p>
+          <p className="mt-1 text-xs">
+            {lang === "fr" ? "gratuit, open source, local" : "free, open source, local-first"}
+          </p>
+          <p className="mt-2 text-xs">
+            By{" "}
+            <a
+              href="https://portfolio.badismerakchi.com/"
+              className="rounded-sm text-foreground/80 underline decoration-border underline-offset-4 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Badis M
+            </a>
+          </p>
+        </div>
+        <nav
+          aria-label={lang === "fr" ? "Autres sites et code source" : "Other sites and source code"}
+          className="flex flex-wrap items-center gap-x-5 gap-y-1"
         >
-          GitHub
-        </a>
+          {links.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              className="inline-flex min-h-11 items-center rounded-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
       </div>
     </footer>
   );

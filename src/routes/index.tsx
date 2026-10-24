@@ -10,13 +10,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "K8s Visual Ops Lab — Learn Kubernetes from zero to Operators" },
+      { title: "Kubernetes Academy — Learn Kubernetes from zero to Operators" },
       {
         name: "description",
         content:
           "A free, visual, hands-on Kubernetes academy in English and French: architecture, guided labs on kind, Helm, GitOps, CRDs and Operators.",
       },
-      { property: "og:title", content: "K8s Visual Ops Lab — Learn Kubernetes visually" },
+      { property: "og:title", content: "Kubernetes Academy — Learn Kubernetes visually" },
       {
         property: "og:description",
         content:
@@ -68,11 +68,14 @@ function Home() {
             </p>
           </div>
           <h1 className="animate-rise mt-5 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-foreground sm:text-6xl">
+            Kubernetes Academy
+          </h1>
+          <p className="animate-rise mt-5 max-w-3xl text-xl font-medium leading-snug tracking-tight text-foreground/90 sm:text-2xl">
             {fr
               ? "Comprenez Kubernetes en le voyant fonctionner."
               : "Understand Kubernetes by watching it work."}
-          </h1>
-          <p className="animate-rise mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          </p>
+          <p className="animate-rise mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             {fr
               ? "Une académie gratuite et visuelle : schémas d'architecture interactifs, explications rigoureuses et labs pratiques dans votre propre terminal, sur un cluster kind local."
               : "A free, visual academy: interactive architecture diagrams, rigorous explanations, and hands-on labs in your own terminal on a local kind cluster."}
